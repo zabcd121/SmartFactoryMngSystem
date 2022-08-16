@@ -1,5 +1,6 @@
 package com.mirae.smartfactory.domain.furnace;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class FurnaceProcess {
     private long dustOutGassingAfter;
     private String shipTo;
 
+    @JsonIgnore
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "processId")
     private Process process;
@@ -31,7 +33,7 @@ public class FurnaceProcess {
     private IngredientAnalysis ingredientAnalysis;
 
 
-    /**
-     * 총 투입량: 원자재 총합(인코드 + 스크랩)
-     */
+    public void setProcess(Process process) {
+        this.process = process;
+    }
 }

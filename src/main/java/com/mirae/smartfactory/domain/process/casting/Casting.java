@@ -1,5 +1,6 @@
 package com.mirae.smartfactory.domain.casting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mirae.smartfactory.domain.furnace.Process;
 import lombok.Getter;
 
@@ -19,6 +20,7 @@ public class Casting {
     private String operator;
     private String shifter;
 
+    @JsonIgnore
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "processId")
     private Process process;
@@ -31,4 +33,8 @@ public class Casting {
 
     @OneToOne(mappedBy = "casting", fetch = LAZY, cascade = CascadeType.ALL)
     CastingTemperature castingTemperature;
+
+    public void setProcess(Process process) {
+        this.process = process;
+    }
 }
