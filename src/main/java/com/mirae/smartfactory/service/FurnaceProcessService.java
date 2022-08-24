@@ -2,7 +2,7 @@ package com.mirae.smartfactory.service;
 
 import com.mirae.smartfactory.domain.process.Process;
 import com.mirae.smartfactory.domain.process.furnace.FurnaceProcess;
-import com.mirae.smartfactory.domain.process.furnace.IngredientAnalysis;
+import com.mirae.smartfactory.domain.process.furnace.Ingredient;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessListDto;
 import com.mirae.smartfactory.repository.FurnaceProcessRepository;
@@ -23,11 +23,21 @@ public class FurnaceProcessService {
     private final FurnaceProcessRepository furnaceProcessRepository;
     private final MemberRepository memberRepository;
 
+//    @Transactional
+//    public void saveFurnaceProcess(FurnaceProcessDto furnaceProcessDto) {
+//        Process process = Process.createProcessWithDto(furnaceProcessDto.getProcess(), memberRepository.findById(furnaceProcessDto.getProcess().getMemberId()));
+//        Ingredient ingredientAnalysis = Ingredient.createIngredientAnalysisWithDto(furnaceProcessDto.getIngredientAnalysis());
+//
+//        FurnaceProcess furnaceProcess = FurnaceProcess.createFurnaceProcessWithDto(furnaceProcessDto, process, ingredientAnalysis);
+//
+//        furnaceProcessRepository.save(furnaceProcess);
+//    }
+
+    @Transactional
     public void saveFurnaceProcess(FurnaceProcessDto furnaceProcessDto) {
         Process process = Process.createProcessWithDto(furnaceProcessDto.getProcess(), memberRepository.findById(furnaceProcessDto.getProcess().getMemberId()));
-        IngredientAnalysis ingredientAnalysis = IngredientAnalysis.createIngredientAnalysisWithDto(furnaceProcessDto.getIngredientAnalysis());
 
-        FurnaceProcess furnaceProcess = FurnaceProcess.createFurnaceProcessWithDto(furnaceProcessDto, process, ingredientAnalysis);
+        FurnaceProcess furnaceProcess = FurnaceProcess.createFurnaceProcessWithDto(furnaceProcessDto, process);
 
         furnaceProcessRepository.save(furnaceProcess);
     }
