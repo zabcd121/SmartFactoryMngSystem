@@ -23,10 +23,10 @@ public class FurnaceProcessRepository {
         return em.createQuery(
                         "select f from FurnaceProcess f" +
                                 " join fetch f.process p" +
-                                " join fetch f.ingredientAnalysis ia" +
+//                                " join fetch f.ingredients ig" +
                                 " where p.date = :date", FurnaceProcess.class
-                ).setParameter("date", date).
-                getResultList();
+                ).setParameter("date", date)
+                .getResultList();
     }
 
 }
