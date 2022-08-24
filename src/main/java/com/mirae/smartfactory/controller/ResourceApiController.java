@@ -1,6 +1,6 @@
-package com.mirae.smartfactory.controller.process;
+package com.mirae.smartfactory.controller;
 
-import com.mirae.smartfactory.dto.*;
+import com.mirae.smartfactory.dto.resource.*;
 import com.mirae.smartfactory.service.ResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
