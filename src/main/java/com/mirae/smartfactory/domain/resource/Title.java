@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 // 이사(Director)
 // 사장(President)
 
-public enum TITLE {
+public enum Title {
     CHAIRMAN("대표이사"),
     DIRECTOR("이사"),
     PRESIDENT("사장"),
@@ -29,7 +29,7 @@ public enum TITLE {
     REPRESENTATIVE("담당자");
 
     final private String krTitle;
-    private TITLE(String krTitle){
+    private Title(String krTitle){
         this.krTitle = krTitle;
     }
     public String getTitle(){
