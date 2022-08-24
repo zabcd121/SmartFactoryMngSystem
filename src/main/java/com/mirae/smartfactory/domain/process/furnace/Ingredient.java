@@ -1,6 +1,7 @@
 package com.mirae.smartfactory.domain.process.furnace;
 
-import com.mirae.smartfactory.dto.process.furnace.IngredientAnalysisDto;
+import com.mirae.smartfactory.domain.resource.ResourceType;
+import com.mirae.smartfactory.dto.process.furnace.IngredientDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,11 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class IngredientAnalysis {
+public class Ingredient {
+
+    @Enumerated(value = EnumType.STRING)
+    private final ResourceType resourceType = ResourceType.INGREDIENT;
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long ingredientAnalysisId;
@@ -25,22 +30,20 @@ public class IngredientAnalysis {
     @JoinColumn(name = "furnaceProcessId")
     private FurnaceProcess furnaceProcess;
 
-    private String materialName;
+    private String ingredientName;
 
     private Float weight;
 
-    public IngredientAnalysis(String materialName, Float weight) {
-        this.materialName = materialName;
+    public Ingredient(String ingredientName, Float weight) {
+        this.ingredientName = ingredientName;
         this.weight = weight;
     }
 
-    public static IngredientAnalysis createIngredientAnalysisWithDto(IngredientAnalysisDto ingredientAnalysisDto) {
-        return IngredientAnalysis.createIngredientAnalysis(ingredientAnalysisDto.getAi(), ingredientAnalysisDto.getSi(),
-                ingredientAnalysisDto.getFe(), ingredientAnalysisDto.getCu(), ingredientAnalysisDto.getMg(),
-                ingredientAnalysisDto.getZn(), ingredientAnalysisDto.getMn());
+    public static Ingredient createIngredientWithDto(IngredientDto ingredientDto) {
+        return Ingredient.createIngredient(ingredientDto.getIngredientName(), ingredientDto.getWeight());
     }
 
-    public static IngredientAnalysis createIngredientAnalysis(String materialName, Float weight) {
-        return new IngredientAnalysis(materialName, weight);
+    public static Ingredient createIngredient(String materialName, Float weight) {
+        return new Ingredient(materialName, weight);
     }
 }
