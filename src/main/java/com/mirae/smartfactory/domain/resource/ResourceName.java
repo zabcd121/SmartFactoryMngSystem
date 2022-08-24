@@ -1,6 +1,8 @@
 package com.mirae.smartfactory.domain.resource;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +14,12 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MaterialName {
 
     @Id @GeneratedValue
-    private long materialNameId;
+    private Long materialNameId;
+    private MaterialType materialType;
     private String krMaterialName;
 
 //    INGOT("인코드"),
@@ -28,5 +32,14 @@ public class MaterialName {
 //    COMPRESSION("압축"),
 //    LOOSE("LOOSE");
 
+
+    private MaterialName(MaterialType materialType, String krMaterialName) {
+        this.materialType = materialType;
+        this.krMaterialName = krMaterialName;
+    }
+
+    public static MaterialName createMaterialName(MaterialType materialType, String krMaterialName) {
+        return new MaterialName(materialType, krMaterialName);
+    }
 
 }
