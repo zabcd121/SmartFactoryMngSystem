@@ -1,11 +1,11 @@
 package com.mirae.smartfactory.domain.process;
 
-import com.mirae.smartfactory.domain.billet.Billet;
-import com.mirae.smartfactory.domain.process.casting.Casting;
-import com.mirae.smartfactory.domain.process.furnace.FurnaceProcess;
 import com.mirae.smartfactory.domain.resource.Additive;
 import com.mirae.smartfactory.domain.resource.Material;
 import com.mirae.smartfactory.domain.resource.Member;
+import com.mirae.smartfactory.dto.AdditiveDto;
+import com.mirae.smartfactory.dto.MaterialDto;
+import com.mirae.smartfactory.dto.process.ProcessDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,13 +30,13 @@ public class Process {
 
     private LocalDate date;
 
-    private int dailyProcessId;
+    private Integer dailyProcessId;
 
-    private int furnaceNumber;
+    private Integer furnaceNumber;
 
-    private int alloyCode;
+    private Integer alloyCode;
 
-    private int size;
+    private Integer size;
 
     @OneToMany(mappedBy = "process", cascade = CascadeType.ALL)
     private List<Material> materials = new ArrayList<>();
@@ -45,15 +45,15 @@ public class Process {
     private List<Additive> additives = new ArrayList<>();
 
 
-    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
-    private FurnaceProcess furnaceProcess;
-
-    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
-    private Casting casting;
-
-    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
-    private Billet billet;
-
+//    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
+//    private FurnaceProcess furnaceProcess;
+//
+//    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
+//    private Casting casting;
+//
+//    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
+//    private Billet billet;
+//
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "memberId")
     private Member member;
@@ -79,26 +79,37 @@ public class Process {
         additive.setProcess(this);
     }
 
-    public void setFurnaceProcess(FurnaceProcess furnaceProcess) {
-        this.furnaceProcess = furnaceProcess;
-        furnaceProcess.setProcess(this);
-    }
-
-    private void setCasting(Casting casting) {
-        this.casting = casting;
-        casting.setProcess(this);
-    }
-
-    private void setBillet(Billet billet) {
-        this.billet = billet;
-        billet.setProcess(this);
-    }
+//    public void setFurnaceProcess(FurnaceProcess furnaceProcess) {
+//        this.furnaceProcess = furnaceProcess;
+//        furnaceProcess.setProcess(this);
+//    }
+//
+//    private void setCasting(Casting casting) {
+//        this.casting = casting;
+//        casting.setProcess(this);
+//    }
+//
+//    private void setBillet(Billet billet) {
+//        this.billet = billet;
+//        billet.setProcess(this);
+//    }
 
     //== 생성 메서드 ==//
+    public static Process createProcessWithDto(ProcessDto processDto, Member member) {
+        List<Material> materials = new ArrayList<>();
+        List<Additive> additives = new ArrayList<>();
+        for (MaterialDto materialDto : processDto.getMaterials()) {
+            materials.add(Material.createMaterialWithDto(materialDto));
+        }
+        for (AdditiveDto additiveDto : processDto.getAdditives()) {
+            additives.add(Additive.createAdditiveWithDto(additiveDto));
+        }
+
+        return Process.createProcess(processDto.getDate(), processDto.getDailyProcessId(), processDto.getFurnaceNumber(), processDto.getAlloyCode(), processDto.getSize(), materials, additives, member);
+    }
 
     public static Process createProcess(LocalDate date, int dailyProcessId, int furnaceNumber, int alloyCode, int size,
-                                        List<Material> materials, List<Additive> additives, FurnaceProcess furnaceProcess,
-                                        Casting casting, Billet billet, Member member) {
+                                        List<Material> materials, List<Additive> additives, Member member) {
         Process process = new Process(date, dailyProcessId, furnaceNumber,alloyCode, size, member);
 
         for (Material material : materials) {
@@ -107,9 +118,9 @@ public class Process {
         for (Additive additive : additives) {
             process.addAdditive(additive);
         }
-        process.setFurnaceProcess(furnaceProcess);
-        process.setCasting(casting);
-        process.setBillet(billet);
+//        process.setFurnaceProcess(furnaceProcess);
+//        process.setCasting(casting);
+//        process.setBillet(billet);
 
         return process;
     }
