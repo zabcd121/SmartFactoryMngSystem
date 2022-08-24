@@ -21,11 +21,10 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class FurnaceProcessApiController {
 
-    //private final ProcessService processService;
     private final FurnaceProcessRepository furnaceProcessRepository;
     private final FurnaceProcessService furnaceProcessService;
 
-    @GetMapping("/furnaceprocesses")
+    @GetMapping("/furnaceprocess")
     public FurnaceProcessListDto furnaceProcessList(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date
     ) {
@@ -34,10 +33,10 @@ public class FurnaceProcessApiController {
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     @PostMapping("/furnaceprocess")
-    public HttpHeaders furnaceProcessSave(@ModelAttribute FurnaceProcessDto furnaceProcessDto) throws URISyntaxException {
+    public HttpHeaders furnaceProcessSave(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date, @RequestBody FurnaceProcessDto furnaceProcessDto) throws URISyntaxException {
         furnaceProcessService.saveFurnaceProcess(furnaceProcessDto);
 
-        URI redirectUri = new URI("http://localhost:8080/mirae/furnaceprocesses?date=");
+        URI redirectUri = new URI("http://localhost:8080/mirae/furnaceprocess?date=" + date);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(redirectUri);
         return httpHeaders;
