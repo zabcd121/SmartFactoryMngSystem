@@ -1,26 +1,36 @@
 package com.mirae.smartfactory.domain.resource;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mirae.smartfactory.domain.furnace.Process;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long memberId;
+    private Long memberId;
     private String name;
-    private TITLE title;
+    private Title title;
+    @Enumerated(value = EnumType.STRING)
     private RoleType roleType;
-    private String id;
+    private String loginId;
     private String password;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "member")
-    private List<Process> processes = new ArrayList<>();
+    private Member(String name, Title title, RoleType roleType, String loginId, String password) {
+        this.name = name;
+        this.title = title;
+        this.roleType = roleType;
+        this.loginId = loginId;
+        this.password = password;
+    }
+
+    public static Member createMember(String name, Title title, RoleType roleType, String loginId, String password) {
+        Member member = new Member(name, title, roleType, loginId, password);
+
+        return member;
+    }
 }
