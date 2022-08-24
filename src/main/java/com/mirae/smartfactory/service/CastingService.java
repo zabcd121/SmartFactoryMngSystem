@@ -6,11 +6,8 @@ import com.mirae.smartfactory.domain.process.casting.Casting;
 import com.mirae.smartfactory.domain.process.casting.CastingData;
 import com.mirae.smartfactory.domain.process.casting.CastingPreparation;
 import com.mirae.smartfactory.domain.process.casting.CastingTemperature;
-import com.mirae.smartfactory.domain.process.furnace.FurnaceProcess;
-import com.mirae.smartfactory.domain.process.furnace.IngredientAnalysis;
 import com.mirae.smartfactory.dto.process.casting.CastingDto;
 import com.mirae.smartfactory.dto.process.casting.CastingListDto;
-import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.repository.CastingRepository;
 import com.mirae.smartfactory.repository.MemberRepository;
 import com.mirae.smartfactory.repository.ProcessRepository;
@@ -50,7 +47,7 @@ public class CastingService {
         List<Casting> castings = castingRepository.findListByDate(date);
 
         List<CastingDto> castingDtos = castings.stream()
-                .map(c -> new CastingDto(c))
+                .map(c -> new CastingDto(c, c.getProcess().getDailyProcessId()))
                 .collect(Collectors.toList());
 
         CastingListDto result = new CastingListDto(castingDtos);
