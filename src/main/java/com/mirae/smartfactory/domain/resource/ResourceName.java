@@ -4,22 +4,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MaterialName {
+public class ResourceName {
 
     @Id @GeneratedValue
-    private Long materialNameId;
-    private MaterialType materialType;
+    private Long resourceNameId;
+
+    @Enumerated(value = EnumType.STRING)
+    private ResourceType resourceType;
     private String krMaterialName;
 
 //    INGOT("인코드"),
@@ -33,13 +29,13 @@ public class MaterialName {
 //    LOOSE("LOOSE");
 
 
-    private MaterialName(MaterialType materialType, String krMaterialName) {
-        this.materialType = materialType;
+    private ResourceName(ResourceType resourceType, String krMaterialName) {
+        this.resourceType = resourceType;
         this.krMaterialName = krMaterialName;
     }
 
-    public static MaterialName createMaterialName(MaterialType materialType, String krMaterialName) {
-        return new MaterialName(materialType, krMaterialName);
+    public static ResourceName createResourceName(ResourceType resourceType, String krMaterialName) {
+        return new ResourceName(resourceType, krMaterialName);
     }
 
 }
