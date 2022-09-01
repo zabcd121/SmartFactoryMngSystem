@@ -1,6 +1,11 @@
 package com.mirae.smartfactory.domain.statistics;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,37 +15,82 @@ import java.util.Map;
  * TODO
  * 달, 년, 분기마다 SUM으로 총량을 받는 SQL문 만들기
  */
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Statistics {
+    private String targetName;
     private List<Map<String, Object>> avgData = new ArrayList<>();
     private List<Map<String, Object>> deviationData = new ArrayList<>();
-    private String key;
-    private String indexBy;
-    private String color;
-    private String bottomLegend;
-    private String leftLegend;
 
-    private Statistics(String key, String indexBy, String color, String bottomLegend, String leftLegend) {
-        this.key = key;
-        this.indexBy = indexBy;
-        this.color = color;
-        this.bottomLegend = bottomLegend;
-        this.leftLegend = leftLegend;
+
+    private Statistics(String targetName) {
+        this.targetName = targetName;
     }
 
+    public void addDailyDatum(LocalDate date, Double value, Double avgFor7Days){
 
+        if(avgFor7Days == null) {
+            avgFor7Days = 0.0D;
+        }else if(value == null) {
+            value = 0.0D;
+        }
 
-    public void addDailyDatum(LocalDate date, Integer value, Integer totalValueForPeriod){
-        Map<String, Object> map = new HashMap<>();
-
-        int monthValue = date.getMonthValue();
+        int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
-        String targetDate = monthValue + "/" + dayOfMonth;
+        String targetDate = month + "/" + dayOfMonth;
 
         addAvgDatum(targetDate, value);
-        addDeviationDatum(targetDate, value, totalValueForPeriod, 7);
+        addDeviationDatum(targetDate, value, avgFor7Days);
     }
 
-    private void addAvgDatum(String targetDate, Integer value) {
+    public void addMonthlyDatum(YearMonth yearMonth, Double value, Double avgFor12Months){
+
+        if(avgFor12Months == null) {
+            avgFor12Months = 0.0D;
+        }else if(value == null) {
+            value = 0.0D;
+        }
+
+        int year = yearMonth.getYear();
+        int month = yearMonth.getMonthValue();
+        String targetDate = year + "." + month;
+
+        addAvgDatum(targetDate, value);
+        addDeviationDatum(targetDate, value, avgFor12Months);
+    }
+
+    public void addQuarterlyDatum(YearMonth yearMonth, Double value, Double avgFor4Quarters){
+
+        if(avgFor4Quarters == null) {
+            avgFor4Quarters = 0.0D;
+        }else if(value == null) {
+            value = 0.0D;
+        }
+
+        int year = yearMonth.getYear();
+        int quarter = (yearMonth.getMonthValue() / 3) + 1;
+        String targetDate = year + "." + quarter + "Q";
+
+        addAvgDatum(targetDate, value);
+        addDeviationDatum(targetDate, value, avgFor4Quarters);
+    }
+
+    public void addYearlyDatum(YearMonth yearMonth, Double value, Double avgFor4Years){
+
+        if(avgFor4Years == null) {
+            avgFor4Years = 0.0D;
+        }else if(value == null) {
+            value = 0.0D;
+        }
+
+        int year = yearMonth.getYear();
+        String targetDate = year + "";
+
+        addAvgDatum(targetDate, value);
+        addDeviationDatum(targetDate, value, avgFor4Years);
+    }
+
+    private void addAvgDatum(String targetDate, Double value) {
         Map<String, Object> map = new HashMap<>();
         map.put("x", targetDate);
         map.put("y", value);
@@ -48,50 +98,23 @@ public class Statistics {
         avgData.add(map);
     }
 
-    private void addDeviationDatum(String targetDate, Integer value, Integer totalValueForPeriod, int periodCnt){
+    private void addDeviationDatum(String targetDate, double value, double totalValueForPeriod){
         Map<String, Object> map = new HashMap<>();
-        Integer deviationValue = 0;
         map.put("x", targetDate);
 
-        deviationValue = value - (totalValueForPeriod / periodCnt);
+        Double deviationValue = 0D;
+        System.out.println(totalValueForPeriod);
+        deviationValue = value - totalValueForPeriod;
+
+        System.out.println(deviationValue);
         map.put("y", deviationValue);
 
         deviationData.add(map);
     }
 
-//    public Integer getTotalAvgValue() {
-//        Integer totalAmount = 0;
-//        for (Map<String, Object> avgDatum : avgData) {
-//            totalAmount += (int)avgDatum.get("y");
-//        }
-//
-//        return totalAmount;
-//    }
 
-//    public void addDailyAvgData(LocalDate date, Float value);
-//    public void addMonthlyAvgData(String month, Float value);
-//    public void addQuarterAvgData(String quarter, Float value);
-//    public void addYearlyAvgData(String year,Float value);
-//
-//    public void addDailyDeviationData(LocalDate date, Float value);
-//    public void addMonthlyDeviationData(String month, Float value);
-//    public void addQuarterDeviationData(String quarter, Float value);
-//    public void addYearlyDeviationData(String year,Float value);
-
-    public static Statistics createDailyAshesStatistics(){
-        return new Statistics("ashes", "일", "#F39B0B", "day", "재발생량");
-    }
-
-    public static Statistics createMonthlyAshesStatistics(){
-        return new Statistics("ashes", "월", "#F39B0B", "month", "재발생량");
-    }
-
-    public static Statistics createQuarterAshesStatistics(){
-        return new Statistics("ashes", "분기", "#F39B0B", "quarter", "재발생량");
-    }
-
-    public static Statistics createYearlyAshesStatistics(){
-        return new Statistics("ashes", "년", "#F39B0B", "year", "재발생량");
+    public static Statistics createAshesStatistics(){
+        return new Statistics("ashes");
     }
 
 
