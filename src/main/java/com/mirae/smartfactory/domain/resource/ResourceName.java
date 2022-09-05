@@ -16,7 +16,7 @@ public class ResourceName {
 
     @Enumerated(value = EnumType.STRING)
     private ResourceType resourceType;
-    private String krMaterialName;
+    private String materialName;
 
 //    INGOT("인코드"),
 //    SELF("자체"),
@@ -29,13 +29,17 @@ public class ResourceName {
 //    LOOSE("LOOSE");
 
 
-    private ResourceName(ResourceType resourceType, String krMaterialName) {
+    private ResourceName(ResourceType resourceType, String materialName) {
         this.resourceType = resourceType;
-        this.krMaterialName = krMaterialName;
+        this.materialName = materialName;
     }
 
-    public static ResourceName createResourceName(ResourceType resourceType, String krMaterialName) {
-        return new ResourceName(resourceType, krMaterialName);
+    public static ResourceName createResourceName(ResourceType resourceType, String materialName) {
+        return new ResourceName(resourceType, materialName);
+    }
+
+    public void changeMaterialName(String materialName){
+        this.materialName = materialName;
     }
 
 }
