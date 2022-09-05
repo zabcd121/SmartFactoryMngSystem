@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 public class FurnaceProcessListDto {
 
-    private List<FurnaceProcessDto> furnaceProcesses;
+    private List<FurnaceProcessQueryDto> furnaceProcesses;
 
-    public FurnaceProcessListDto(List<FurnaceProcessDto> furnaceProcesses) {
+    public FurnaceProcessListDto(List<FurnaceProcessQueryDto> furnaceProcesses) {
         this.furnaceProcesses = furnaceProcesses;
     }
 }
