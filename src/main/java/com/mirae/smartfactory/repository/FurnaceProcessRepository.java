@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,33 +20,20 @@ public class FurnaceProcessRepository {
         em.persist(furnaceProcess);
     }
 
+    public void update(FurnaceProcess furnaceProcess) {
+        em.merge(furnaceProcess);
+    }
+
     public List<FurnaceProcess> findListByDate(LocalDate date) {
         return em.createQuery(
                         "select f from FurnaceProcess f" +
                                 " join fetch f.process p" +
-//                                " join fetch f.ingredients ig" +
                                 " where p.date = :date", FurnaceProcess.class
                 ).setParameter("date", date)
                 .getResultList();
     }
 
-    public Integer findTotalAshesAmountByDate(LocalDate date) {
-        return em.createQuery(
-                        "select sum(f.ashesAmount) from FurnaceProcess f" +
-                                " join fetch f.process p" +
-                                " where p.date = :date" , Integer.class)
-                .setParameter("date", date)
-                .getSingleResult();
-    }
 
-    public Integer findTotalAshesAmountByStartDateAndFinishDate(LocalDate startDate, LocalDate finishDate) {
-        return em.createQuery(
-                "select sum(f.ashesAmount) from FurnaceProcess f" +
-                        " join fetch f.process p" +
-                        " where p.date between :startDate and :finishDate" +
-                        " order by p.date", Integer.class)
-                .setParameter("startDate", startDate)
-                .setParameter("finishDate", finishDate)
-                .getSingleResult();
-    }
+
+
 }
