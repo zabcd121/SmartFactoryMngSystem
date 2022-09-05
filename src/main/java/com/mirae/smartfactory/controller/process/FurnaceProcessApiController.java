@@ -2,18 +2,19 @@ package com.mirae.smartfactory.controller.process;
 
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessListDto;
+import com.mirae.smartfactory.dto.result.SuccessResult;
 import com.mirae.smartfactory.repository.FurnaceProcessRepository;
 import com.mirae.smartfactory.service.FurnaceProcessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+
+import static com.mirae.smartfactory.consts.DomainConditionCode.*;
 
 @Slf4j
 @RestController
@@ -25,21 +26,35 @@ public class FurnaceProcessApiController {
     private final FurnaceProcessService furnaceProcessService;
 
     @GetMapping("/furnaceprocess")
-    public FurnaceProcessListDto furnaceProcessList(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date
+    public SuccessResult<FurnaceProcessListDto> furnaceProcessList(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
     ) {
-        return furnaceProcessService.findFurnaceProcesses(date);
+        FurnaceProcessListDto result = furnaceProcessService.findFurnaceProcesses(date);
+
+        return new SuccessResult<FurnaceProcessListDto>(FURNACEPROCESS_SEARCH_SUCCESS, "ok", result);
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     @PostMapping("/furnaceprocess")
-    public HttpHeaders furnaceProcessSave(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date, @RequestBody FurnaceProcessDto furnaceProcessDto) throws URISyntaxException {
+    public void furnaceProcessSave(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                   @RequestBody FurnaceProcessDto furnaceProcessDto,
+                                   HttpServletResponse httpServletResponse) {
         furnaceProcessService.saveFurnaceProcess(furnaceProcessDto);
 
-        URI redirectUri = new URI("http://localhost:8080/mirae/furnaceprocess?date=" + date);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(redirectUri);
-        return httpHeaders;
+        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
+//        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
+    }
+
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    @PutMapping("/furnaceprocess/{id}")
+    public void furnaceProcessUpdate(@PathVariable("id") Long furnaceProcessId,
+                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                     @RequestBody FurnaceProcessDto furnaceProcessDto,
+                                     HttpServletResponse httpServletResponse) {
+        furnaceProcessService.updateFurnaceProcess(furnaceProcessId, furnaceProcessDto);
+
+        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
+//        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
     }
 
 }
