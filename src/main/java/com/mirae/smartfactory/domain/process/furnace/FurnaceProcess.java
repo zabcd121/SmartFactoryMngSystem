@@ -1,9 +1,6 @@
 package com.mirae.smartfactory.domain.process.furnace;
 
 import com.mirae.smartfactory.domain.process.Process;
-import com.mirae.smartfactory.domain.resource.Additive;
-import com.mirae.smartfactory.domain.resource.Material;
-import com.mirae.smartfactory.dto.MaterialDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.IngredientDto;
 import lombok.AccessLevel;
@@ -30,9 +27,9 @@ public class FurnaceProcess {
     private LocalDateTime beforeTappingTime;
     private Integer outGassingInput;
     private Integer inclusionsInput;
-    private Integer dustAmount;
-    private Integer dustOutGassingBefore;
-    private Integer dustOutGassingAfter;
+    private Integer ashesAmount;
+    private Integer ashesOutGassingBefore;
+    private Integer ashesOutGassingAfter;
     private String shipTo;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
@@ -47,15 +44,30 @@ public class FurnaceProcess {
     private List<Ingredient> ingredients = new ArrayList<>();
 
     private FurnaceProcess(LocalDateTime chargingTime, LocalDateTime outGassingTime, LocalDateTime beforeTappingTime, Integer outGassingInput, Integer inclusionsInput,
-                           Integer dustAmount, Integer dustOutGassingBefore, Integer dustOutGassingAfter, String shipTo, Process process) {
+                           Integer ashesAmount, Integer ashesOutGassingBefore, Integer ashesOutGassingAfter, String shipTo, Process process) {
         this.chargingTime = chargingTime;
         this.outGassingTime = outGassingTime;
         this.beforeTappingTime = beforeTappingTime;
         this.outGassingInput = outGassingInput;
         this.inclusionsInput = inclusionsInput;
-        this.dustAmount = dustAmount;
-        this.dustOutGassingBefore = dustOutGassingBefore;
-        this.dustOutGassingAfter = dustOutGassingAfter;
+        this.ashesAmount = ashesAmount;
+        this.ashesOutGassingBefore = ashesOutGassingBefore;
+        this.ashesOutGassingAfter = ashesOutGassingAfter;
+        this.shipTo = shipTo;
+        this.process = process;
+    }
+
+    private FurnaceProcess(Long furnaceProcessId, LocalDateTime chargingTime, LocalDateTime outGassingTime, LocalDateTime beforeTappingTime, Integer outGassingInput, Integer inclusionsInput,
+                           Integer ashesAmount, Integer ashesOutGassingBefore, Integer ashesOutGassingAfter, String shipTo, Process process) {
+        this.furnaceProcessId = furnaceProcessId;
+        this.chargingTime = chargingTime;
+        this.outGassingTime = outGassingTime;
+        this.beforeTappingTime = beforeTappingTime;
+        this.outGassingInput = outGassingInput;
+        this.inclusionsInput = inclusionsInput;
+        this.ashesAmount = ashesAmount;
+        this.ashesOutGassingBefore = ashesOutGassingBefore;
+        this.ashesOutGassingAfter = ashesOutGassingAfter;
         this.shipTo = shipTo;
         this.process = process;
     }
@@ -70,6 +82,17 @@ public class FurnaceProcess {
         ingredient.setFurnaceProcess(this);
     }
 
+    public static FurnaceProcess createFurnaceProcessWithDtoAndId(Long furnaceProcessId, FurnaceProcessDto fpd, Process process) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (IngredientDto ingredientDto : fpd.getIngredients()) {
+            ingredients.add(Ingredient.createIngredientWithDto(ingredientDto));
+        }
+
+        return FurnaceProcess.createFurnaceProcessWithId(furnaceProcessId, fpd.getChargingTime(), fpd.getOutGassingTime(), fpd.getBeforeTappingTime(),
+                fpd.getOutGassingInput(), fpd.getInclusionsInput(), fpd.getAshesAmount(), fpd.getAshesOutGassingBefore(), fpd.getAshesOutGassingAfter(),
+                fpd.getShipTo(), process, ingredients);
+    }
+
     public static FurnaceProcess createFurnaceProcessWithDto(FurnaceProcessDto fpd, Process process) {
         List<Ingredient> ingredients = new ArrayList<>();
         for (IngredientDto ingredientDto : fpd.getIngredients()) {
@@ -77,15 +100,28 @@ public class FurnaceProcess {
         }
 
         return FurnaceProcess.createFurnaceProcess(fpd.getChargingTime(), fpd.getOutGassingTime(), fpd.getBeforeTappingTime(),
-                fpd.getOutGassingInput(), fpd.getInclusionsInput(), fpd.getDustAmount(), fpd.getDustOutGassingBefore(), fpd.getDustOutGassingAfter(),
+                fpd.getOutGassingInput(), fpd.getInclusionsInput(), fpd.getAshesAmount(), fpd.getAshesOutGassingBefore(), fpd.getAshesOutGassingAfter(),
                 fpd.getShipTo(), process, ingredients);
     }
 
     public static FurnaceProcess createFurnaceProcess(LocalDateTime chargingTime, LocalDateTime outGassingTime, LocalDateTime beforeTappingTime, Integer outGassingInput, Integer inclusionsInput,
-                                                      Integer dustAmount, Integer dustOutGassingBefore, Integer dustOutGassingAfter, String shipTo, Process process, List<Ingredient> ingredients) {
+                                                      Integer ashesAmount, Integer ashesOutGassingBefore, Integer ashesOutGassingAfter, String shipTo, Process process, List<Ingredient> ingredients) {
 
         FurnaceProcess furnaceProcess = new FurnaceProcess(chargingTime, outGassingTime, beforeTappingTime, outGassingInput,
-                inclusionsInput, dustAmount, dustOutGassingBefore, dustOutGassingAfter, shipTo, process);
+                inclusionsInput, ashesAmount, ashesOutGassingBefore, ashesOutGassingAfter, shipTo, process);
+
+        for (Ingredient ingredient : ingredients) {
+            furnaceProcess.addIngredient(ingredient);
+        }
+
+        return furnaceProcess;
+    }
+
+    public static FurnaceProcess createFurnaceProcessWithId(Long furnaceProcessId, LocalDateTime chargingTime, LocalDateTime outGassingTime, LocalDateTime beforeTappingTime, Integer outGassingInput, Integer inclusionsInput,
+                                                      Integer ashesAmount, Integer ashesOutGassingBefore, Integer ashesOutGassingAfter, String shipTo, Process process, List<Ingredient> ingredients) {
+
+        FurnaceProcess furnaceProcess = new FurnaceProcess(furnaceProcessId, chargingTime, outGassingTime, beforeTappingTime, outGassingInput,
+                inclusionsInput, ashesAmount, ashesOutGassingBefore, ashesOutGassingAfter, shipTo, process);
 
         for (Ingredient ingredient : ingredients) {
             furnaceProcess.addIngredient(ingredient);
