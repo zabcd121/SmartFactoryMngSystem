@@ -14,7 +14,7 @@ public class CastingPreparationDto {
     private Integer arAmount2;
     private Integer operatingDuration;
     private Integer outGassingTemperature;
-    private Integer ATBSpeed;
+    private Integer atbSpeed;
     private String castingPreparationMore;
 
     public CastingPreparationDto(CastingPreparation castingPreparation) {
@@ -24,7 +24,7 @@ public class CastingPreparationDto {
         this.arAmount2 = castingPreparation.getArAmount2();
         this.operatingDuration = castingPreparation.getOperatingDuration();
         this.outGassingTemperature = castingPreparation.getOutGassingTemperature();
-        this.ATBSpeed = castingPreparation.getATBSpeed();
+        this.atbSpeed = castingPreparation.getAtbSpeed();
         this.castingPreparationMore = castingPreparation.getCastingPreparationMore();
     }
 }
