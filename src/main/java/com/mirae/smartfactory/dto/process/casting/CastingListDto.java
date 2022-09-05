@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 public class CastingListDto {
 
-    private List<CastingDto> castings;
+    private List<CastingQueryDto> castings;
 
-    public CastingListDto(List<CastingDto> castings) {
+    public CastingListDto(List<CastingQueryDto> castings) {
         this.castings = castings;
     }
 }
