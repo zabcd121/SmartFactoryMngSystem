@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CastingSaveDto {
+public class CastingQueryDto {
+
+    private Long castingId;
     private Integer dailyProcessId;
     private LocalDateTime tappingStartTime;
     private LocalDateTime tappingEndTime;
@@ -27,7 +29,8 @@ public class CastingSaveDto {
     private CastingTemperatureDto castingTemperature;
     private BilletDto billet;
 
-    public CastingSaveDto(Casting casting, Integer dailyProcessId) {
+    public CastingQueryDto(Casting casting, Integer dailyProcessId) {
+        this.castingId = casting.getCastingId();
         this.dailyProcessId = dailyProcessId;
         this.tappingStartTime = casting.getTappingStartTime();
         this.tappingEndTime = casting.getTappingEndTime();
