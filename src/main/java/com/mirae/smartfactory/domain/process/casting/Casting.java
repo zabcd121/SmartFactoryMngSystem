@@ -1,14 +1,12 @@
 package com.mirae.smartfactory.domain.process.casting;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mirae.smartfactory.domain.billet.Billet;
 import com.mirae.smartfactory.domain.process.Process;
-import com.mirae.smartfactory.domain.process.furnace.FurnaceProcess;
 import com.mirae.smartfactory.dto.process.casting.CastingDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +16,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Casting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +61,15 @@ public class Casting {
         this.billet = billet;
     }
 
+
+
+    public static Casting createCastingWithDtoAndId(Long castingId, CastingDto cd, Process process, CastingPreparation castingPreparation,
+                                                    CastingData castingData, CastingTemperature castingTemperature, Billet billet) {
+        return Casting.createCastingWithDto(castingId, cd.getTappingStartTime(), cd.getTappingEndTime(),
+                cd.getOperator(), cd.getShifter(), cd.getRemarks(), process,
+                castingPreparation, castingData, castingTemperature, billet);
+    }
+
     public static Casting createCastingWithDto(CastingDto cd, Process process, CastingPreparation castingPreparation,
                                                CastingData castingData, CastingTemperature castingTemperature, Billet billet) {
         return Casting.createCasting(cd.getTappingStartTime(), cd.getTappingEndTime(),
@@ -73,6 +81,11 @@ public class Casting {
     public static Casting createCasting(LocalDateTime tappingStartTime, LocalDateTime tappingEndTime, String operator, String shifter, String remarks, Process process,
                                         CastingPreparation castingPreparation, CastingData castingData, CastingTemperature castingTemperature, Billet billet) {
         return new Casting(tappingStartTime, tappingEndTime, operator, shifter, remarks, process, castingPreparation, castingData, castingTemperature, billet);
+    }
+
+    public static Casting createCastingWithDto(Long castingId, LocalDateTime tappingStartTime, LocalDateTime tappingEndTime, String operator, String shifter, String remarks, Process process,
+                                               CastingPreparation castingPreparation, CastingData castingData, CastingTemperature castingTemperature, Billet billet) {
+        return new Casting(castingId, tappingStartTime, tappingEndTime, operator, shifter, remarks, process, castingPreparation, castingData, castingTemperature, billet);
     }
 
 
