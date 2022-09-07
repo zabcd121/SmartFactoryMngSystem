@@ -17,7 +17,7 @@ public class StatisticsService {
     public DailyStatisticsListDto findTotalDomainDailyStatistics() {
         Statistics ashes = ashesStatisticsService.findAshesAmountForCurrent7Days();
 
-        StatisticsListDto statisticsListDto = new StatisticsListDto(ashes);
+        StatisticsListDto statisticsListDto = new StatisticsListDto(ashes, null, null, null);
 
         return new DailyStatisticsListDto(statisticsListDto);
     }

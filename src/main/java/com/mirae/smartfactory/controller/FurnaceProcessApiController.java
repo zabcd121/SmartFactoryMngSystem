@@ -57,4 +57,16 @@ public class FurnaceProcessApiController {
 //        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
     }
 
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    @DeleteMapping("/furnaceprocess/{id}")
+    public void furnaceProcessDelete(@PathVariable("id") Long furnaceProcessId,
+                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                     @RequestBody FurnaceProcessDto furnaceProcessDto,
+                                     HttpServletResponse httpServletResponse) {
+        furnaceProcessService.updateFurnaceProcess(furnaceProcessId, furnaceProcessDto);
+
+        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
+//        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
+    }
+
 }
