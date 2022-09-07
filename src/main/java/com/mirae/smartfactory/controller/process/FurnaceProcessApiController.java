@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.controller.process;
+package com.mirae.smartfactory.controller;
 
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessListDto;
