@@ -19,6 +19,10 @@ public class CastingRepository {
         em.persist(casting);
     }
 
+    public void update(Casting casting) {
+        em.merge(casting);
+    }
+
     public List<Casting> findListByDate(LocalDate date) {
         return em.createQuery(
                         "select c from Casting c" +
