@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.controller;
+package com.mirae.smartfactory.controller.process;
 
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessListDto;
@@ -21,8 +21,6 @@ import static com.mirae.smartfactory.consts.DomainConditionCode.*;
 @RequestMapping("/mirae")
 @RequiredArgsConstructor
 public class FurnaceProcessApiController {
-
-    private final FurnaceProcessRepository furnaceProcessRepository;
     private final FurnaceProcessService furnaceProcessService;
 
     @GetMapping("/furnaceprocess")
@@ -31,7 +29,7 @@ public class FurnaceProcessApiController {
     ) {
         FurnaceProcessListDto result = furnaceProcessService.findFurnaceProcesses(date);
 
-        return new SuccessResult<FurnaceProcessListDto>(FURNACEPROCESS_SEARCH_SUCCESS, "ok", result);
+        return new SuccessResult<>(FURNACEPROCESS_SEARCH_SUCCESS, "ok", result);
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
@@ -42,7 +40,6 @@ public class FurnaceProcessApiController {
         furnaceProcessService.saveFurnaceProcess(furnaceProcessDto);
 
         httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
-//        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
@@ -54,7 +51,6 @@ public class FurnaceProcessApiController {
         furnaceProcessService.updateFurnaceProcess(furnaceProcessId, furnaceProcessDto);
 
         httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
-//        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
@@ -66,7 +62,6 @@ public class FurnaceProcessApiController {
         furnaceProcessService.updateFurnaceProcess(furnaceProcessId, furnaceProcessDto);
 
         httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
-//        return new SuccessResult<String>(FURNACEPROCESS_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
     }
 
 }
