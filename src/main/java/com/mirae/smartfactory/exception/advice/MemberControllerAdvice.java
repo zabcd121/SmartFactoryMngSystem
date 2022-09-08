@@ -1,5 +1,6 @@
 package com.mirae.smartfactory.exception.advice;
 
+import com.mirae.smartfactory.controller.MemberApiController;
 import com.mirae.smartfactory.dto.result.ErrorResult;
 import com.mirae.smartfactory.exception.InvalidPWException;
 import com.mirae.smartfactory.exception.NotExistIdException;
@@ -14,17 +15,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
+import static com.mirae.smartfactory.consts.DomainConditionCode.*;
+
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = {MemberApiController.class})
 public class MemberControllerAdvice {
-    private final static String ID_NULL_CODE = "0101";
-    private final static String PW_NULL_CODE = "0102";
-    private final static String NOT_EXIST_ID_CODE = "0102";
-    private final static String INVALID_PW_CODE = "0103";
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
-    public ErrorResult invalidPWExHandler(MethodArgumentNotValidException ex) {
+    public ErrorResult emptyLoginArgument(MethodArgumentNotValidException ex) {
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
         String field = "";
         String message = "";
@@ -34,13 +34,15 @@ public class MemberControllerAdvice {
             message = fe.getDefaultMessage();
             break;
         }
-        if(field == "loginId") return new ErrorResult(ID_NULL_CODE, message);
+        log.info("emptyLoginArgument ex {}", ex);
+        log.info("field, {}", field);
+        if(field.equals("loginId")) return new ErrorResult(ID_NULL_CODE, message);
         else return new ErrorResult(PW_NULL_CODE, message);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
-    public ErrorResult notExistExHandler(NotExistIdException ex) {
+    public ErrorResult notExistIdExHandler(NotExistIdException ex) {
         log.error("[exceptionHandler] member", ex);
         return new ErrorResult(NOT_EXIST_ID_CODE, ex.getMessage());
     }
