@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.domain.casting;
+package com.mirae.smartfactory.domain.process.casting;
 
 import lombok.Getter;
 
