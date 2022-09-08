@@ -1,7 +1,7 @@
 package com.mirae.smartfactory.domain.resource;
 
 import com.mirae.smartfactory.domain.process.Process;
-import com.mirae.smartfactory.dto.MaterialDto;
+import com.mirae.smartfactory.dto.resource.MaterialDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +16,14 @@ import static javax.persistence.FetchType.*;
 public class Material {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long materialId;
+    private Long materialId;
 
     @Enumerated(value = EnumType.STRING)
     private ResourceType resourceType;
 
     private String materialName;
 
-    private long weight;
+    private Integer weight;
 
     @Setter
     @ManyToOne(fetch = LAZY)
@@ -31,7 +31,7 @@ public class Material {
     private Process process;
 
 
-    public Material(ResourceType materialType, String materialName, long weight) {
+    public Material(ResourceType materialType, String materialName, Integer weight) {
         this.resourceType = materialType;
         this.materialName = materialName;
         this.weight = weight;
@@ -48,7 +48,7 @@ public class Material {
         return material;
     }
 
-    public static Material createMaterial(ResourceType resourceType, String materialName, long weight) {
+    public static Material createMaterial(ResourceType resourceType, String materialName, Integer weight) {
         return new Material(resourceType, materialName, weight);
     }
 }
