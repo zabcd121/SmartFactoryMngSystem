@@ -37,27 +37,6 @@ public class ResourceRepository {
         return em.createQuery("select r from ResourceName r" + " where r.resourceType = :resourceType", ResourceName.class).setParameter("resourceType", resourceType).getResultList();
     }
 
-//    public List<ResourceName> findAll_si() {
-//        return em.createQuery(
-//                        "select r from ResourceName r" +
-//                                " where r.resourceType = 'SI'", ResourceName.class)
-//                .getResultList();
-//    }
-//
-//    public List<ResourceName> findAll_ingredient() {
-//        return em.createQuery(
-//                        "select r from ResourceName r" +
-//                                " where r.resourceType = 'INGREDIENT'", ResourceName.class)
-//                .getResultList();
-//    }
-//
-//    public List<ResourceName> findAll_businessContact() {
-//        return em.createQuery(
-//                        "select r from ResourceName r" +
-//                                " where r.resourceType = 'BUSINESS_CONTACT'", ResourceName.class)
-//                .getResultList();
-//    }
-
     public List<ResourceName> findAll() {
         return em.createQuery(
                 "select r from ResourceName r", ResourceName.class
