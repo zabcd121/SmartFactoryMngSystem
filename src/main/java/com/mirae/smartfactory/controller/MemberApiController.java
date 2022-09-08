@@ -26,7 +26,6 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-
     @PostMapping("/login")
     public SuccessResult<SessionMemberInfo> login(@Validated @RequestBody MemberLoginDto memberLoginDto, HttpServletRequest request) {
         Member loginMember = memberService.login(memberLoginDto.getLoginId(), memberLoginDto.getPassword());
@@ -47,6 +46,6 @@ public class MemberApiController {
             session.invalidate(); //세션 제거
         }
 
-        return new SuccessNoResult(LOGOUT_SUCCESS, "ok");
+        return new SuccessNoResult(LOGOUT_SUCCESS, "로그아웃 완료");
     }
 }
