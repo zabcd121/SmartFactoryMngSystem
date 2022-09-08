@@ -1,9 +1,8 @@
 package com.mirae.smartfactory.dto.process;
 
-import com.mirae.smartfactory.dto.AdditiveDto;
-import com.mirae.smartfactory.dto.MaterialDto;
+import com.mirae.smartfactory.dto.resource.AdditiveDto;
+import com.mirae.smartfactory.dto.resource.MaterialDto;
 import com.mirae.smartfactory.domain.process.Process;
-import com.mirae.smartfactory.domain.resource.Member;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,8 +19,6 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(of = "processId")
 @AllArgsConstructor
 public class ProcessDto {
-//    private Long processId;
-
     private LocalDate date;
 
     private Integer dailyProcessId;
@@ -38,18 +35,7 @@ public class ProcessDto {
 
     private Long memberId;
 
-//    public ProcessDto(Long processId, LocalDate date, int dailyProcessId, int furnaceNumber, int alloyCode, int size, Long memberId) {
-//        this.processId = processId;
-//        this.date = date;
-//        this.dailyProcessId = dailyProcessId;
-//        this.furnaceNumber = furnaceNumber;
-//        this.alloyCode = alloyCode;
-//        this.size = size;
-//        this.memberId = memberId;
-//    }
-
     public ProcessDto(Process process) {
-//        this.processId = process.getProcessId();
         this.date = process.getDate();
         this.dailyProcessId = process.getDailyProcessId();
         this.furnaceNumber = process.getFurnaceNumber();
