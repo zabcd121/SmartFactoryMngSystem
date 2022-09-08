@@ -41,7 +41,9 @@ public class InitDb {
 
         public void dbInit1() {
             Member member = Member.createMember("김현석", Title.REPRESENTATIVE, RoleType.MEMBER, "abcd123", "1234");
+            Member adminMember = Member.createMember("관리자1", Title.REPRESENTATIVE, RoleType.ADMIN, "admin1234", "1234");
             em.persist(member);
+            em.persist(adminMember);
 
             List<Material> materials = new ArrayList<>();
             Material material1 = Material.createMaterial(ResourceType.INGOT, "인코드", 12113);
