@@ -3,7 +3,7 @@ package com.mirae.smartfactory.service.statistics;
 import com.mirae.smartfactory.domain.statistics.Statistics;
 import com.mirae.smartfactory.domain.statistics.StatisticsType;
 import com.mirae.smartfactory.dto.statistics.DailyStatisticsListDto;
-import com.mirae.smartfactory.dto.statistics.StatisticsListDto;
+import com.mirae.smartfactory.dto.statistics.AllDomainStatisticsListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ public class TotalStatisticsService {
         Statistics material = statisticsService.findDailyAvgAndDeviationDataForCurrent7Days(StatisticsType.MATERIAL);
 
 
-        StatisticsListDto statisticsListDto = new StatisticsListDto(ashes, billet, defective, material);
+        AllDomainStatisticsListDto statisticsListDto = new AllDomainStatisticsListDto(ashes, billet, defective, material);
 
         return new DailyStatisticsListDto(statisticsListDto);
     }
