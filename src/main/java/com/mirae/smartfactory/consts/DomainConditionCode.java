@@ -45,5 +45,26 @@ public class DomainConditionCode {
     public static final String RESOURCE_REMOVE_SUCCESS = "0408";
     public static final String RESOURCE_TOTAL_SEARCH_SUCCESS = "0409";
 
+    /**
+     * Statistics : 05
+     */
+    public static final String TOTAL_DAILY_SEARCH_SUCCESS = "0500";
+    public static final String ASHES_DAILY_SEARCH_SUCCESS = "0501";
+    public static final String ASHES_MONTHLY_SEARCH_SUCCESS = "0502";
+    public static final String ASHES_QUARTERLY_SEARCH_SUCCESS = "0503";
+    public static final String ASHES_YEARLY_SEARCH_SUCCESS = "0504";
+    public static final String BILLET_DAILY_SEARCH_SUCCESS = "0505";
+    public static final String BILLET_MONTHLY_SEARCH_SUCCESS = "0506";
+    public static final String BILLET_QUARTERLY_SEARCH_SUCCESS = "0507";
+    public static final String BILLET_YEARLY_SEARCH_SUCCESS = "0508";
+    public static final String DEFECTIVE_DAILY_SEARCH_SUCCESS = "0509";
+    public static final String DEFECTIVE_MONTHLY_SEARCH_SUCCESS = "0510";
+    public static final String DEFECTIVE_QUARTERLY_SEARCH_SUCCESS = "0511";
+    public static final String DEFECTIVE_YEARLY_SEARCH_SUCCESS = "0512";
+    public static final String MATERIAL_DAILY_SEARCH_SUCCESS = "0513";
+    public static final String MATERIAL_MONTHLY_SEARCH_SUCCESS = "0514";
+    public static final String MATERIAL_QUARTERLY_SEARCH_SUCCESS = "0515";
+    public static final String MATERIAL_YEARLY_SEARCH_SUCCESS = "0516";
+
 
 }
