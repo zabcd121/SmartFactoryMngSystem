@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TotalDailyStatisticsListDto {
+public class AllDomainStatisticsListDto {
     private Statistics ashes;
     private Statistics billet;
     private Statistics defective;
