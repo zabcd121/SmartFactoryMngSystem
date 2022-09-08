@@ -16,7 +16,7 @@ public class MaterialDto {
 
     private String materialName;
 
-    private Long weight;
+    private Integer weight;
 
 //    private Long processId;
 
