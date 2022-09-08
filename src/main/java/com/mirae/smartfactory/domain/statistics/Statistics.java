@@ -11,21 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * TODO
- * 달, 년, 분기마다 SUM으로 총량을 받는 SQL문 만들기
- */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Statistics {
-    private String targetName;
     private List<Map<String, Object>> avgData = new ArrayList<>();
     private List<Map<String, Object>> deviationData = new ArrayList<>();
-
-
-    private Statistics(String targetName) {
-        this.targetName = targetName;
-    }
 
     public void addDailyDatum(LocalDate date, Double value, Double avgFor7Days){
 
@@ -59,7 +49,7 @@ public class Statistics {
         addDeviationDatum(targetDate, value, avgFor12Months);
     }
 
-    public void addQuarterlyDatum(YearMonth yearMonth, Double value, Double avgFor4Quarters){
+    public void addQuarterlyDatum(LocalDate yearMonth, Double value, Double avgFor4Quarters){
 
         if(avgFor4Quarters == null) {
             avgFor4Quarters = 0.0D;
@@ -98,23 +88,22 @@ public class Statistics {
         avgData.add(map);
     }
 
-    private void addDeviationDatum(String targetDate, double value, double totalValueForPeriod){
+    private void addDeviationDatum(String targetDate, double value, double totalAvgValueForPeriod){
         Map<String, Object> map = new HashMap<>();
         map.put("x", targetDate);
 
         Double deviationValue = 0D;
-        System.out.println(totalValueForPeriod);
-        deviationValue = value - totalValueForPeriod;
 
-        System.out.println(deviationValue);
+        deviationValue = value - totalAvgValueForPeriod;
         map.put("y", deviationValue);
+
 
         deviationData.add(map);
     }
 
 
-    public static Statistics createAshesStatistics(){
-        return new Statistics("ashes");
+    public static Statistics createStatistics(){
+        return new Statistics();
     }
 
 
