@@ -1,7 +1,10 @@
 package com.mirae.smartfactory.controller.process;
 
+import com.mirae.smartfactory.consts.DomainConditionCode;
+import com.mirae.smartfactory.consts.RedirectURLs;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessListDto;
+import com.mirae.smartfactory.dto.result.SuccessNoResult;
 import com.mirae.smartfactory.dto.result.SuccessResult;
 import com.mirae.smartfactory.repository.FurnaceProcessRepository;
 import com.mirae.smartfactory.service.FurnaceProcessService;
@@ -39,7 +42,7 @@ public class FurnaceProcessApiController {
                                    HttpServletResponse httpServletResponse) {
         furnaceProcessService.saveFurnaceProcess(furnaceProcessDto);
 
-        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
+        httpServletResponse.addHeader("Location", RedirectURLs.FURNACE_PROCESS_REDIRECT_URL + date);
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
@@ -50,18 +53,17 @@ public class FurnaceProcessApiController {
                                      HttpServletResponse httpServletResponse) {
         furnaceProcessService.updateFurnaceProcess(furnaceProcessId, furnaceProcessDto);
 
-        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
+        httpServletResponse.addHeader("Location", RedirectURLs.FURNACE_PROCESS_REDIRECT_URL + date);
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
-    @DeleteMapping("/furnaceprocess/{id}")
-    public void furnaceProcessDelete(@PathVariable("id") Long furnaceProcessId,
-                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-                                     @RequestBody FurnaceProcessDto furnaceProcessDto,
-                                     HttpServletResponse httpServletResponse) {
-        furnaceProcessService.updateFurnaceProcess(furnaceProcessId, furnaceProcessDto);
+    @DeleteMapping("/process/{id}")
+    public SuccessNoResult furnaceProcessDelete(@PathVariable("id") Long processId,
+                                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                                HttpServletResponse httpServletResponse) {
+        furnaceProcessService.deleteFurnaceProcess(processId);
 
-        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/furnaceprocess?date=" + date);
+        return new SuccessNoResult(FURNACEPROCESS_DELETE_SUCCESS, "용해일지 삭제 성공");
     }
 
 }
