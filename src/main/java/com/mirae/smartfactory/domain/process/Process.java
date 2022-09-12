@@ -3,9 +3,9 @@ package com.mirae.smartfactory.domain.process;
 import com.mirae.smartfactory.domain.resource.Additive;
 import com.mirae.smartfactory.domain.resource.Material;
 import com.mirae.smartfactory.domain.resource.Member;
-import com.mirae.smartfactory.dto.AdditiveDto;
-import com.mirae.smartfactory.dto.MaterialDto;
 import com.mirae.smartfactory.dto.process.ProcessDto;
+import com.mirae.smartfactory.dto.resource.AdditiveDto;
+import com.mirae.smartfactory.dto.resource.MaterialDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,6 @@ import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
-/**
- * 체크o
- */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,16 +41,6 @@ public class Process {
     @OneToMany(mappedBy = "process", cascade = CascadeType.ALL)
     private List<Additive> additives = new ArrayList<>();
 
-
-//    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
-//    private FurnaceProcess furnaceProcess;
-//
-//    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
-//    private Casting casting;
-//
-//    @OneToOne(mappedBy = "process", fetch = LAZY, cascade = CascadeType.ALL)
-//    private Billet billet;
-//
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "memberId")
     private Member member;
@@ -79,21 +66,6 @@ public class Process {
         additive.setProcess(this);
     }
 
-//    public void setFurnaceProcess(FurnaceProcess furnaceProcess) {
-//        this.furnaceProcess = furnaceProcess;
-//        furnaceProcess.setProcess(this);
-//    }
-//
-//    private void setCasting(Casting casting) {
-//        this.casting = casting;
-//        casting.setProcess(this);
-//    }
-//
-//    private void setBillet(Billet billet) {
-//        this.billet = billet;
-//        billet.setProcess(this);
-//    }
-
     //== 생성 메서드 ==//
     public static Process createProcessWithDto(ProcessDto processDto, Member member) {
         List<Material> materials = new ArrayList<>();
@@ -118,9 +90,6 @@ public class Process {
         for (Additive additive : additives) {
             process.addAdditive(additive);
         }
-//        process.setFurnaceProcess(furnaceProcess);
-//        process.setCasting(casting);
-//        process.setBillet(billet);
 
         return process;
     }
