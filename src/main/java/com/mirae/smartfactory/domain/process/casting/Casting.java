@@ -28,7 +28,7 @@ public class Casting {
 
     private String remarks;
     @Setter
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY) //cascade 삭제(주조일지가 삭제되어도 process 테이블 데이터는 살아있어야 함.)
     @JoinColumn(name = "processId")
     private Process process;
 
