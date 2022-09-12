@@ -20,6 +20,8 @@ public class DomainConditionCode {
     public static final String FURNACEPROCESS_SEARCH_FAIL = "0201";
     public static final String FURNACEPROCESS_SAVE_SUCCESS = "0202";
     public static final String FURNACEPROCESS_SAVE_FAIL = "0203";
+    public static final String FURNACEPROCESS_DELETE_SUCCESS = "0203";
+    public static final String FURNACEPROCESS_DELETE_FAIL = "0203";
 
     /**
      * Casting: 03
