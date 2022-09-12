@@ -36,10 +36,6 @@ public class FurnaceProcess {
     @JoinColumn(name = "processId")
     private Process process;
 
-//    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "ingredientAnalysisId")
-//    private IngredientAnalysis ingredientAnalysis;
-
     @OneToMany(mappedBy = "furnaceProcess", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients = new ArrayList<>();
 
@@ -71,11 +67,6 @@ public class FurnaceProcess {
         this.shipTo = shipTo;
         this.process = process;
     }
-
-//    public void setProcess(Process process) {
-//        this.process = process;
-//        process.setFurnaceProcess(this);
-//    }
 
     private void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
