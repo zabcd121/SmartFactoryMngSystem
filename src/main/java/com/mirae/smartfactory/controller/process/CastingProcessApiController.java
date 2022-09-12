@@ -1,5 +1,7 @@
 package com.mirae.smartfactory.controller.process;
 
+import com.mirae.smartfactory.consts.DomainConditionCode;
+import com.mirae.smartfactory.consts.RedirectURLs;
 import com.mirae.smartfactory.dto.process.casting.CastingDto;
 import com.mirae.smartfactory.dto.process.casting.CastingListDto;
 import com.mirae.smartfactory.dto.result.SuccessResult;
@@ -37,11 +39,7 @@ public class CastingProcessApiController {
             HttpServletResponse httpServletResponse){
 
         castingService.saveCasting(castingDto);
-
-
-        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/casting?date=" + date);
-
-//        return new SuccessResult<String>(CASTING_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
+        httpServletResponse.addHeader("Location", RedirectURLs.CASTING_REDIRECT_URL + date);
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
@@ -53,10 +51,17 @@ public class CastingProcessApiController {
             HttpServletResponse httpServletResponse){
 
         castingService.updateCasting(castingId, castingDto);
+        httpServletResponse.addHeader("Location", RedirectURLs.CASTING_REDIRECT_URL + date);
+    }
 
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    @DeleteMapping("/casting/{id}")
+    public void castingDelete(
+            @PathVariable("id") Long castingId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+            HttpServletResponse httpServletResponse){
 
-        httpServletResponse.addHeader("Location", "http://localhost:8080/mirae/casting?date=" + date);
-
-//        return new SuccessResult<String>(CASTING_SAVE_SUCCESS, "저장 완료 되었습니다.", id.toString());
+        castingService.deleteCasting(castingId);
+        httpServletResponse.addHeader("Location", RedirectURLs.CASTING_REDIRECT_URL + date);
     }
 }
