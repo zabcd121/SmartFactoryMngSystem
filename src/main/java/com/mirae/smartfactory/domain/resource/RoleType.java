@@ -5,5 +5,5 @@ package com.mirae.smartfactory.domain.resource;
 //OPERATOR: 현장 작업자. 현장 작업자가 작성한 내용을 SUPERVISOR가 시스템에 입력
 //MEMBER: 일반회원
 public enum RoleType {
-    ADMIN, SUPERVISOR, OPERATOR, MEMBER
+    ROLE_MEMBER, ROLE_ADMIN, ROLE_SUPERVISOR, ROLE_OPERATOR
 }
