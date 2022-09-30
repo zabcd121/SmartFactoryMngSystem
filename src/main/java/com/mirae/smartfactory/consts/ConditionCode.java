@@ -4,6 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum ConditionCode {
+    /**
+     * Login, Auth: 01
+     */
     LOGIN_SUCCESS("0100", "로그인 성공"),
     ID_NULL_CODE("0101", "아이디를 입력되지 않았습니다."),
     PW_NULL_CODE("0102", "패스워드가 입력되지 않았습니다."),
@@ -17,6 +20,7 @@ public enum ConditionCode {
     WRONG_TOKEN("0110", "wrong token error"),
     UNKNOWN_ERROR("0111", "unknown error"),
 
+
     /**
      * FurnaceProcess : 02
      */
@@ -25,8 +29,11 @@ public enum ConditionCode {
     FURNACEPROCESS_SEARCH_FAIL("0201", "용해일지 조회 실패"),
     FURNACEPROCESS_SAVE_SUCCESS("0202", "용해일지 저장 성공"),
     FURNACEPROCESS_SAVE_FAIL("0203", "용해일지 조회 실패"),
-    FURNACEPROCESS_DELETE_SUCCESS("0203", "용해일지 삭제 성공"),
-    FURNACEPROCESS_DELETE_FAIL("0203", "용해일지 삭제 실패"),
+    FURNACEPROCESS_UPDATE_SUCCESS("0204", "용해일지 수정 성공"),
+    FURNACEPROCESS_UPDATE_FAIL("0205", "용해일지 수정 실패"),
+    FURNACEPROCESS_DELETE_SUCCESS("0206", "용해일지 삭제 성공"),
+    FURNACEPROCESS_DELETE_FAIL("0207", "용해일지 삭제 실패"),
+
 
     /**
      * Casting: 03
@@ -35,6 +42,10 @@ public enum ConditionCode {
     CASTING_SEARCH_FAIL("0301", "주조일지 조회 실패"),
     CASTING_SAVE_SUCCESS("0302", "주조일지 저장 성공"),
     CASTING_SAVE_FAIL("0303", "주조일지 저장 실패"),
+    CASTING_UPDATE_SUCCESS("0304", "주조일지 수정 성공"),
+    CASTING_UPDATE_FAIL("0305", "주조일지 수정 성공"),
+    CASTING_DELETE_SUCCESS("0306", "주조일지 삭제 성공"),
+    CASTING_DELETE_FAIL("0307", "주조일지 삭제 실패"),
 
 
     /**
