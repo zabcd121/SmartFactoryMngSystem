@@ -1,18 +1,22 @@
 package com.mirae.smartfactory.config.security;
 
-import com.mirae.smartfactory.config.jwt.JwtAuthenticationFilter;
+import com.mirae.smartfactory.config.jwt.CustomAccessDeniedHandler;
+import com.mirae.smartfactory.config.jwt.JwtAuthenticationEntryPoint;
 import com.mirae.smartfactory.config.jwt.JwtAuthorizationFilter;
+import com.mirae.smartfactory.config.jwt.JwtTokenProvider;
 import com.mirae.smartfactory.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,13 +28,16 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final CorsFilter corsFilter;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -42,15 +49,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint()
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsFilter) //@CrossOrigin(인증x), 시큐리티 필터에 등록 인증(o)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), memberRepository)) //AuthenticationManager
+                .addFilterBefore(new JwtAuthorizationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+//                .addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
+//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), memberRepository)) //AuthenticationManager
                 .authorizeRequests()
                 .antMatchers("/mirae/**")
                 .access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
@@ -59,6 +69,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/statistics/**")
                 .access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 //    @Bean
