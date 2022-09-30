@@ -1,23 +1,22 @@
 package com.mirae.smartfactory.controller;
 
-import com.mirae.smartfactory.consts.SessionConst;
-import com.mirae.smartfactory.domain.resource.Member;
+import com.mirae.smartfactory.config.jwt.JwtProperties;
+import com.mirae.smartfactory.config.jwt.JwtTokenProvider;
+import com.mirae.smartfactory.domain.model.resource.Member;
 import com.mirae.smartfactory.dto.member.MemberLoginDto;
-import com.mirae.smartfactory.dto.member.SessionMemberInfo;
+import com.mirae.smartfactory.dto.member.SimpleMemberInfo;
 import com.mirae.smartfactory.dto.result.SuccessNoResult;
 import com.mirae.smartfactory.dto.result.SuccessResult;
 import com.mirae.smartfactory.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
-import static com.mirae.smartfactory.consts.DomainConditionCode.*;
+import static com.mirae.smartfactory.consts.ConditionCode.*;
+
 
 @RestController
 @RequestMapping
@@ -25,27 +24,23 @@ import static com.mirae.smartfactory.consts.DomainConditionCode.*;
 public class MemberApiController {
 
     private final MemberService memberService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public SuccessResult<SessionMemberInfo> login(@Validated @RequestBody MemberLoginDto memberLoginDto, HttpServletRequest request) {
+    public SuccessResult<SimpleMemberInfo> login(@Validated @RequestBody MemberLoginDto memberLoginDto, HttpServletResponse response) {
         Member loginMember = memberService.login(memberLoginDto.getLoginId(), memberLoginDto.getPassword());
 
-        SessionMemberInfo sessionMemberInfo = new SessionMemberInfo(loginMember.getMemberId(), loginMember.getRoleType());
+        SimpleMemberInfo sessionMemberInfo = new SimpleMemberInfo(loginMember.getMemberId(), loginMember.getRoleType());
 
-        HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, sessionMemberInfo);
+        String jwtToken = jwtTokenProvider.createToken(String.valueOf(loginMember.getMemberId()), loginMember.getRoleType().toString());
+        response.addHeader(JwtProperties.HEADER_AUTHORIZATION, JwtProperties.TOKEN_PREFIX + jwtToken);
 
-        return new SuccessResult<SessionMemberInfo>(LOGIN_SUCCESS, "ok", sessionMemberInfo);
+        return new SuccessResult<SimpleMemberInfo>(LOGIN_SUCCESS.getCode(), LOGIN_SUCCESS.getMessage(), sessionMemberInfo);
 
     }
 
-    @PostMapping("/logout")
-    public SuccessNoResult logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate(); //세션 제거
-        }
-
-        return new SuccessNoResult(LOGOUT_SUCCESS, "로그아웃 완료");
+    @DeleteMapping("/logout")
+    public SuccessNoResult logout() {
+        return new SuccessNoResult(LOGOUT_SUCCESS.getCode(), LOGOUT_SUCCESS.getMessage());
     }
 }

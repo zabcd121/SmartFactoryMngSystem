@@ -1,6 +1,6 @@
 package com.mirae.smartfactory.dto.member;
 
-import com.mirae.smartfactory.domain.resource.RoleType;
+import com.mirae.smartfactory.domain.model.resource.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
