@@ -1,6 +1,6 @@
 package com.mirae.smartfactory.config.auth;
 
-import com.mirae.smartfactory.domain.resource.Member;
+import com.mirae.smartfactory.domain.model.resource.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
