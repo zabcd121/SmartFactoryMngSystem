@@ -1,7 +1,7 @@
 package com.mirae.smartfactory.service.statistics;
 
-import com.mirae.smartfactory.domain.statistics.Statistics;
-import com.mirae.smartfactory.domain.statistics.StatisticsType;
+import com.mirae.smartfactory.domain.model.statistics.Statistics;
+import com.mirae.smartfactory.domain.model.statistics.StatisticsType;
 import com.mirae.smartfactory.dto.statistics.DailyStatisticsListDto;
 import com.mirae.smartfactory.dto.statistics.AllDomainStatisticsListDto;
 import lombok.RequiredArgsConstructor;

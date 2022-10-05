@@ -1,7 +1,7 @@
 package com.mirae.smartfactory.service;
 
-import com.mirae.smartfactory.domain.resource.ResourceName;
-import com.mirae.smartfactory.domain.resource.ResourceType;
+import com.mirae.smartfactory.domain.model.resource.ResourceName;
+import com.mirae.smartfactory.domain.model.resource.ResourceType;
 import com.mirae.smartfactory.dto.resource.*;
 import com.mirae.smartfactory.repository.ResourceRepository;
 import lombok.RequiredArgsConstructor;
@@ -128,6 +128,7 @@ public class ResourceService {
         return new TotalResourceNameDto(outerScrapNameListDto, siNameListDto, ingredientNameListDto, businessContactNameListDto);
     }
 
+    @Transactional
     public void removeResourceName(Long resourceNameId) {
         Optional<ResourceName> resourceName = resourceRepository.findById(resourceNameId);
         resourceRepository.remove(resourceName.get());

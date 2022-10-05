@@ -1,7 +1,7 @@
 package com.mirae.smartfactory.service.statistics;
 
-import com.mirae.smartfactory.domain.statistics.Statistics;
-import com.mirae.smartfactory.domain.statistics.StatisticsType;
+import com.mirae.smartfactory.domain.model.statistics.Statistics;
+import com.mirae.smartfactory.domain.model.statistics.StatisticsType;
 import com.mirae.smartfactory.repository.statistics.StatisticsRepository;
 import com.mirae.smartfactory.repository.statistics.StatisticsRepositoryFactory;
 import lombok.extern.slf4j.Slf4j;

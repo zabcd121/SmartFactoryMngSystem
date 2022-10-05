@@ -1,6 +1,6 @@
 package com.mirae.smartfactory.service;
 
-import com.mirae.smartfactory.domain.resource.Member;
+import com.mirae.smartfactory.domain.model.resource.Member;
 import com.mirae.smartfactory.exception.InvalidPWException;
 import com.mirae.smartfactory.exception.NotExistIdException;
 import com.mirae.smartfactory.repository.MemberRepository;
