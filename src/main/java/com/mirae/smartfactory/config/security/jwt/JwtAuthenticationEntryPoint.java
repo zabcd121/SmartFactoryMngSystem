@@ -1,7 +1,6 @@
 package com.mirae.smartfactory.config.jwt;
 
 import com.mirae.smartfactory.consts.ConditionCode;
-import com.mirae.smartfactory.consts.DomainConditionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.security.core.AuthenticationException;

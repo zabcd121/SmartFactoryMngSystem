@@ -1,15 +1,18 @@
-package com.mirae.smartfactory.config.security;
+package com.mirae.smartfactory.config.security.config;
 
-import com.mirae.smartfactory.config.jwt.CustomAccessDeniedHandler;
-import com.mirae.smartfactory.config.jwt.JwtAuthenticationEntryPoint;
-import com.mirae.smartfactory.config.jwt.JwtAuthorizationFilter;
-import com.mirae.smartfactory.config.jwt.JwtTokenProvider;
-import com.mirae.smartfactory.repository.MemberRepository;
+import com.mirae.smartfactory.config.security.jwt.JwtAccessDeniedHandler;
+import com.mirae.smartfactory.config.security.jwt.JwtAuthenticationEntryPoint;
+//import com.mirae.smartfactory.config.jwt.JwtAuthorizationFilter;
+//import com.mirae.smartfactory.config.jwt.JwtTokenProvider;
+import com.mirae.smartfactory.config.security.jwt.JwtTokenFilterConfigurer;
+//import com.mirae.smartfactory.config.security.jwt.test.JwtCheckFilter;
+import com.mirae.smartfactory.config.security.jwt.JwtTokenProvider;
+import com.mirae.smartfactory.config.security.jwt.test.JwtLoginFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,27 +20,31 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CorsF
 
-    private final CorsFilter corsFilter;
 
+    @Bean // 인증 실패 처리 관련 객체
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Bean // 비밀번호 암호화 객체
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -46,21 +53,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                .accessDeniedHandler(new CustomAccessDeniedHandler())
-                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패시 오류 처리
+                .accessDeniedHandler(jwtAccessDeniedHandler) // 권한 부족시 오류 처리
+
                 .and()
                 .addFilter(corsFilter) //@CrossOrigin(인증x), 시큐리티 필터에 등록 인증(o)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(new JwtAuthorizationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-//                .addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
-//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), memberRepository)) //AuthenticationManager
                 .authorizeRequests()
                 .antMatchers("/mirae/**")
                 .access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
@@ -68,13 +74,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/statistics/**")
                 .access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+
+                .and()
+                .apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); // Jwt 관련 필터 추가
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource() {

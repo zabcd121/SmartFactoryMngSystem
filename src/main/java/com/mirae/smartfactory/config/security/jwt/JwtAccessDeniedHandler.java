@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.config.jwt;
+package com.mirae.smartfactory.config.security.jwt;
 
 import com.mirae.smartfactory.consts.ConditionCode;
 import org.json.JSONObject;
