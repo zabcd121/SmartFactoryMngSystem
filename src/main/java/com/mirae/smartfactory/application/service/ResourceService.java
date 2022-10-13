@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.service;
+package com.mirae.smartfactory.application.service;
 
 import com.mirae.smartfactory.domain.model.resource.ResourceName;
 import com.mirae.smartfactory.domain.model.resource.ResourceType;
