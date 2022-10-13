@@ -1,8 +1,8 @@
 package com.mirae.smartfactory.interceptor;
 
 import com.mirae.smartfactory.consts.SessionConst;
-import com.mirae.smartfactory.domain.resource.RoleType;
-import com.mirae.smartfactory.dto.member.SessionMemberInfo;
+import com.mirae.smartfactory.domain.model.resource.RoleType;
+import com.mirae.smartfactory.dto.member.SimpleMemberInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,8 +20,9 @@ public class AdminLoginCheckInterceptor implements HandlerInterceptor {
         log.info("관리자 인증 체크 인터셉터 실행 {}", requestURI);
 
         HttpSession session = request.getSession(false);
+
         if (session == null) {
-            log.info("미인증 사용자 요청");
+            log.info("session = null, 미인증 사용자 요청");
 
             //로그인으로 redirect
             response.sendRedirect("/login?redirectURL=" + requestURI);
@@ -29,10 +30,10 @@ public class AdminLoginCheckInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        SessionMemberInfo loginMember = (SessionMemberInfo) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        SimpleMemberInfo loginMember = (SimpleMemberInfo) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
         if (loginMember == null) {
-            log.info("미인증 사용자 요청");
+            log.info("SessionMemberInfo = null, 미인증 사용자 요청");
 
             //로그인으로 redirect
             response.sendRedirect("/login?redirectURL=" + requestURI);
@@ -40,7 +41,7 @@ public class AdminLoginCheckInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if(loginMember.getRoleType() != RoleType.ADMIN) {
+        if(loginMember.getRoleType() != RoleType.ROLE_ADMIN) {
             return false;
         }
 

@@ -1,13 +1,13 @@
 package com.mirae.smartfactory.repository;
 
-import com.mirae.smartfactory.domain.process.casting.Casting;
-import com.mirae.smartfactory.domain.process.furnace.FurnaceProcess;
+import com.mirae.smartfactory.domain.model.process.casting.Casting;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,6 +22,25 @@ public class CastingRepository {
     public void update(Casting casting) {
         em.merge(casting);
     }
+
+    public void delete(Casting casting) {
+        em.remove(casting);
+    }
+
+    public Optional<Casting> findById(Long id) {
+        return Optional.ofNullable(em.find(Casting.class, id));
+    }
+
+    public Optional<Casting> findByProcessId(Long processId) {
+        return Optional.ofNullable(
+                em.createQuery(
+                        "select c from Casting c" +
+                                " where c.process.processId = :processId", Casting.class)
+                    .setParameter("processId", processId)
+                    .getResultStream().findFirst().orElse(null)
+                );
+    }
+
 
     public List<Casting> findListByDate(LocalDate date) {
         return em.createQuery(

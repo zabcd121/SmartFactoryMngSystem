@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class SessionMemberInfo {
+public class SimpleMemberInfo {
 
     private Long memberId;
     private RoleType roleType;

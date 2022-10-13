@@ -1,20 +1,19 @@
 package com.mirae.smartfactory.controller.process;
 
-import com.mirae.smartfactory.consts.DomainConditionCode;
-import com.mirae.smartfactory.consts.RedirectURLs;
+import com.mirae.smartfactory.dto.PkDto;
 import com.mirae.smartfactory.dto.process.casting.CastingDto;
 import com.mirae.smartfactory.dto.process.casting.CastingListDto;
+import com.mirae.smartfactory.dto.result.SuccessNoResult;
 import com.mirae.smartfactory.dto.result.SuccessResult;
-import com.mirae.smartfactory.service.CastingService;
+import com.mirae.smartfactory.application.service.CastingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
-import static com.mirae.smartfactory.consts.DomainConditionCode.*;
+import static com.mirae.smartfactory.consts.ConditionCode.*;
+
 
 @RestController
 @RequestMapping("/mirae")
@@ -25,43 +24,37 @@ public class CastingProcessApiController {
 
     @GetMapping("/casting")
     public SuccessResult<CastingListDto> castingList(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
-    ) {
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+
         CastingListDto castings = castingService.findCastings(date);
-        return new SuccessResult<>(CASTING_SEARCH_SUCCESS, "ok", castings);
+        return new SuccessResult<>(CASTING_SEARCH_SUCCESS, castings);
     }
 
-    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     @PostMapping("/casting")
-    public void castingSave(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @RequestBody CastingDto castingDto,
-            HttpServletResponse httpServletResponse){
+    public SuccessResult<PkDto> castingSave(@RequestBody CastingDto castingDto) {
 
-        castingService.saveCasting(castingDto);
-        httpServletResponse.addHeader("Location", RedirectURLs.CASTING_REDIRECT_URL + date);
+        Long castingId = castingService.saveCasting(castingDto);
+
+        return new SuccessResult<>(CASTING_SAVE_SUCCESS, new PkDto(castingId));
     }
 
-    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     @PutMapping("/casting/{id}")
-    public void castingUpdate(
+    public SuccessResult<PkDto> castingUpdate(
             @PathVariable("id") Long castingId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @RequestBody CastingDto castingDto,
-            HttpServletResponse httpServletResponse){
+            @RequestBody CastingDto castingDto) {
 
-        castingService.updateCasting(castingId, castingDto);
-        httpServletResponse.addHeader("Location", RedirectURLs.CASTING_REDIRECT_URL + date);
+        Long updatedCastingId = castingService.updateCasting(castingId, castingDto);
+        System.out.println("#############updateCastingId" + updatedCastingId);
+
+        return new SuccessResult<>(CASTING_UPDATE_SUCCESS, new PkDto(updatedCastingId));
+
     }
 
-    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     @DeleteMapping("/casting/{id}")
-    public void castingDelete(
-            @PathVariable("id") Long castingId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            HttpServletResponse httpServletResponse){
+    public SuccessNoResult castingDelete(@PathVariable("id") Long castingId) {
 
         castingService.deleteCasting(castingId);
-        httpServletResponse.addHeader("Location", RedirectURLs.CASTING_REDIRECT_URL + date);
+
+        return new SuccessNoResult(CASTING_DELETE_SUCCESS);
     }
 }

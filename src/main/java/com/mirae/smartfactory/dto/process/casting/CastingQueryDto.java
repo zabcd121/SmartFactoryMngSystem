@@ -1,12 +1,12 @@
 package com.mirae.smartfactory.dto.process.casting;
 
-import com.mirae.smartfactory.domain.process.casting.Casting;
+import com.mirae.smartfactory.domain.model.process.casting.Casting;
 import com.mirae.smartfactory.dto.BilletDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @AllArgsConstructor
@@ -15,8 +15,8 @@ public class CastingQueryDto {
 
     private Long castingId;
     private Integer dailyProcessId;
-    private LocalDateTime tappingStartTime;
-    private LocalDateTime tappingEndTime;
+    private LocalTime tappingStartTime;
+    private LocalTime tappingEndTime;
     private String operator;
     private String shifter;
 

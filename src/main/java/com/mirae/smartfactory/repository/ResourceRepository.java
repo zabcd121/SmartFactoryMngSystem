@@ -1,8 +1,7 @@
 package com.mirae.smartfactory.repository;
 
-import com.mirae.smartfactory.domain.resource.Member;
-import com.mirae.smartfactory.domain.resource.ResourceName;
-import com.mirae.smartfactory.domain.resource.ResourceType;
+import com.mirae.smartfactory.domain.model.resource.ResourceName;
+import com.mirae.smartfactory.domain.model.resource.ResourceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

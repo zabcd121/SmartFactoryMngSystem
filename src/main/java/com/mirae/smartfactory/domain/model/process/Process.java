@@ -6,7 +6,6 @@ import com.mirae.smartfactory.domain.model.resource.Member;
 import com.mirae.smartfactory.domain.service.FurnaceProcessUpdateService;
 import com.mirae.smartfactory.dto.process.ProcessDto;
 import com.mirae.smartfactory.dto.process.casting.ProcessSimpleDto;
-import com.mirae.smartfactory.dto.process.furnace.IngredientDto;
 import com.mirae.smartfactory.dto.resource.AdditiveDto;
 import com.mirae.smartfactory.dto.resource.MaterialDto;
 import lombok.AccessLevel;
@@ -61,12 +60,16 @@ public class Process {
 
     private void addMaterial(Material material) {
         materials.add(material);
-        material.setProcess(this);
+        if(material.getProcess() != this) {
+            material.setProcess(this);
+        }
     }
 
     private void addAdditive(Additive additive) {
         additives.add(additive);
-        additive.setProcess(this);
+        if(additive.getProcess() != this) {
+            additive.setProcess(this);
+        }
     }
 
     //== 생성 메서드 ==//
@@ -102,6 +105,12 @@ public class Process {
         return process;
     }
 
+    public static Process createProcess(LocalDate date, Integer dailyProcessId, Integer furnaceNumber, Integer alloyCode, Integer size, Member member) {
+        Process process = new Process(date, dailyProcessId, furnaceNumber,alloyCode, size, member);
+
+        return process;
+    }
+
     public void changeState(ProcessSimpleDto process) {
         this.date = process.getDate();
         this.dailyProcessId = process.getDailyProcessId();
@@ -113,13 +122,13 @@ public class Process {
     public void changeState(ProcessDto processDto, FurnaceProcessUpdateService fpUpdateService) {
 
         // 기존에 저장되어있던 물질과 추가물중 수정과정에서 삭제된 것을 추척하여 컬렉션에서 삭제하고 쓰레기 데이터도 db에서 삭제함.
-        List<Material> removedMaterials = fpUpdateService.traceDeletedMaterials(this.materials, processDto.getMaterials());
+        List<Material> removedMaterials = fpUpdateService.traceRemovedMaterials(this.materials, processDto.getMaterials());
         for (Material removedMaterial : removedMaterials) {
             this.materials.remove(removedMaterial);
         }
         fpUpdateService.deleteRemovedMaterials(removedMaterials);
 
-        List<Additive> removedAdditives = fpUpdateService.traceDeletedAdditives(this.additives, processDto.getAdditives());
+        List<Additive> removedAdditives = fpUpdateService.traceRemovedAdditives(this.additives, processDto.getAdditives());
         for (Additive removedAdditive : removedAdditives) {
             this.additives.remove(removedAdditive);
         }

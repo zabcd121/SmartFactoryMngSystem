@@ -1,10 +1,8 @@
 package com.mirae.smartfactory.interceptor;
 
 import com.mirae.smartfactory.consts.SessionConst;
-import com.mirae.smartfactory.domain.resource.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

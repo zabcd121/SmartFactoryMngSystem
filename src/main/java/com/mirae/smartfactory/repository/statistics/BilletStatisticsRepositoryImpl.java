@@ -1,6 +1,6 @@
 package com.mirae.smartfactory.repository.statistics;
 
-import com.mirae.smartfactory.domain.statistics.StatisticsType;
+import com.mirae.smartfactory.domain.model.statistics.StatisticsType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

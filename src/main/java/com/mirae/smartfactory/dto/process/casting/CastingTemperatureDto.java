@@ -1,13 +1,16 @@
 package com.mirae.smartfactory.dto.process.casting;
 
-import com.mirae.smartfactory.domain.process.casting.CastingTemperature;
+import com.mirae.smartfactory.domain.model.process.casting.CastingTemperature;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CastingTemperatureDto {
 
+    private Long castingTemperatureId;
     private Integer furnaceTemperatureInit;
     private Integer furnaceTemperature15M;
     private Integer furnaceTemperature30M;
@@ -20,6 +23,7 @@ public class CastingTemperatureDto {
     private Integer coolingWaterTemperatureTerminated;
 
     public CastingTemperatureDto(CastingTemperature castingTemperature) {
+        this.castingTemperatureId = castingTemperature.getCastingTemperatureId();
         this.furnaceTemperatureInit = castingTemperature.getFurnaceTemperatureInit();
         this.furnaceTemperature15M = castingTemperature.getFurnaceTemperature15M();
         this.furnaceTemperature30M = castingTemperature.getFurnaceTemperature30M();

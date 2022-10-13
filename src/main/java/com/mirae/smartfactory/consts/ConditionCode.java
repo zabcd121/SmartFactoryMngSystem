@@ -61,6 +61,8 @@ public enum ConditionCode {
     RESOURCE_REMOVE_SUCCESS("0408", "리소스 삭제 성공"),
     RESOURCE_TOTAL_SEARCH_SUCCESS("0409", "리소스 전체 조회"),
 
+    RESOURCE_UPDATE_SUCCESS("0410", "리소스 수정 성공"),
+
     /**
      * Statistics : 05
      */

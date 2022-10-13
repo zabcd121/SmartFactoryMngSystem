@@ -1,12 +1,10 @@
 package com.mirae.smartfactory.dto.process;
 
+import com.mirae.smartfactory.domain.model.resource.Member;
 import com.mirae.smartfactory.dto.resource.AdditiveDto;
 import com.mirae.smartfactory.dto.resource.MaterialDto;
-import com.mirae.smartfactory.domain.process.Process;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import com.mirae.smartfactory.domain.model.process.Process;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
@@ -18,7 +16,9 @@ import java.util.stream.Collectors;
 @Setter
 @EqualsAndHashCode(of = "processId")
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProcessDto {
+    private Long processId;
     private LocalDate date;
 
     private Integer dailyProcessId;
@@ -35,18 +35,30 @@ public class ProcessDto {
 
     private Long memberId;
 
-    public ProcessDto(Process process) {
+    private ProcessDto(Process process) {
+        this.processId = process.getProcessId();
         this.date = process.getDate();
         this.dailyProcessId = process.getDailyProcessId();
         this.furnaceNumber = process.getFurnaceNumber();
         this.alloyCode = process.getAlloyCode();
         this.size = process.getSize();
         this.materials = process.getMaterials().stream()
-                .map(material -> new MaterialDto(material))
+                .map(material -> MaterialDto.of(material))
                 .collect(Collectors.toList());
         this.additives = process.getAdditives().stream()
-                .map(additive -> new AdditiveDto(additive))
+                .map(additive -> AdditiveDto.of(additive))
                 .collect(Collectors.toList());
         this.memberId = process.getMember().getMemberId();
+    }
+
+    public static ProcessDto of(Process process) {
+        return new ProcessDto(process);
+    }
+
+    public static Process toEntity(ProcessDto processDto, Member member) {
+        return Process.createProcess(processDto.getDate(), processDto.getDailyProcessId(), processDto.furnaceNumber, processDto.alloyCode, processDto.getSize(),
+                processDto.getMaterials().stream().map(materialDto -> MaterialDto.toEntity(materialDto)).collect(Collectors.toList()),
+                processDto.getAdditives().stream().map(additive -> AdditiveDto.toEntity(additive)).collect(Collectors.toList()),
+                member);
     }
 }

@@ -1,12 +1,15 @@
 package com.mirae.smartfactory.dto.process.casting;
 
-import com.mirae.smartfactory.domain.process.casting.CastingData;
+import com.mirae.smartfactory.domain.model.process.casting.CastingData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CastingDataDto {
+    private Long castingDataId;
     private Integer castingSpeedInit;
     private Integer castingSpeedLampInit;
     private Integer castingSpeedNormal;
@@ -42,6 +45,7 @@ public class CastingDataDto {
     private Integer sustainTime;
 
     public CastingDataDto(CastingData castingData) {
+        this.castingDataId = castingData.getCastingDataId();
         this.castingSpeedInit = castingData.getCastingSpeedInit();
         this.castingSpeedLampInit = castingData.getCastingSpeedLampInit();
         this.castingSpeedNormal = castingData.getCastingSpeedNormal();

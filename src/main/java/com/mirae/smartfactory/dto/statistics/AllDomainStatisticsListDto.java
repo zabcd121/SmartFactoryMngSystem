@@ -1,6 +1,6 @@
 package com.mirae.smartfactory.dto.statistics;
 
-import com.mirae.smartfactory.domain.statistics.Statistics;
+import com.mirae.smartfactory.domain.model.statistics.Statistics;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

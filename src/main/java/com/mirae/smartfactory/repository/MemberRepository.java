@@ -1,7 +1,6 @@
 package com.mirae.smartfactory.repository;
 
-import com.mirae.smartfactory.domain.process.furnace.FurnaceProcess;
-import com.mirae.smartfactory.domain.resource.Member;
+import com.mirae.smartfactory.domain.model.resource.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,8 +21,13 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
+    public Optional<Member> findByIdInAuthorization(Long id) {
+        return Optional.ofNullable(em.find(Member.class, id));
+    }
+
     public Optional<Member> findByLoginId(String loginId) {
-        return Optional.ofNullable(em.createQuery(
+        return Optional.ofNullable(
+                em.createQuery(
                         "select m from Member m" +
                                 " where m.loginId = :loginId", Member.class
                 ).setParameter("loginId", loginId)
