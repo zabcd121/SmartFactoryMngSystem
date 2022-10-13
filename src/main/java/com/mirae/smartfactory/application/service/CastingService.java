@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.service;
+package com.mirae.smartfactory.application.service;
 
 import com.mirae.smartfactory.domain.model.billet.Billet;
 import com.mirae.smartfactory.domain.model.process.Process;
@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 public class CastingService {
 
     private final CastingRepository castingRepository;
-    private final MemberRepository memberRepository;
     private final ProcessRepository processRepository;
 
     @Transactional
