@@ -1,13 +1,9 @@
-package com.mirae.smartfactory.config.security.config;
+package com.mirae.smartfactory.config.security;
 
 import com.mirae.smartfactory.config.security.jwt.JwtAccessDeniedHandler;
 import com.mirae.smartfactory.config.security.jwt.JwtAuthenticationEntryPoint;
-//import com.mirae.smartfactory.config.jwt.JwtAuthorizationFilter;
-//import com.mirae.smartfactory.config.jwt.JwtTokenProvider;
 import com.mirae.smartfactory.config.security.jwt.JwtTokenFilterConfigurer;
-//import com.mirae.smartfactory.config.security.jwt.test.JwtCheckFilter;
 import com.mirae.smartfactory.config.security.jwt.JwtTokenProvider;
-import com.mirae.smartfactory.config.security.jwt.test.JwtLoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
@@ -31,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final CorsF
+    private final CorsFilter corsFilter;
 
 
     @Bean // 인증 실패 처리 관련 객체
@@ -80,19 +75,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); // Jwt 관련 필터 추가
     }
 
-
-
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowCredentials(true);
-//        config.addAllowedOrigin("*");
-//        config.addAllowedHeader("*");
-//        config.addAllowedMethod("*");
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//
-//        return source;
-//    }
 }
