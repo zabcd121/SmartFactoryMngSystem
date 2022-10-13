@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.service.statistics;
+package com.mirae.smartfactory.application.service;
 
 import com.mirae.smartfactory.domain.model.statistics.Statistics;
 import com.mirae.smartfactory.domain.model.statistics.StatisticsType;

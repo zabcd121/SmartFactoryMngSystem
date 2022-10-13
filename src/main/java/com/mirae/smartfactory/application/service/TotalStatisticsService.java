@@ -1,5 +1,6 @@
-package com.mirae.smartfactory.service.statistics;
+package com.mirae.smartfactory.application.service;
 
+import com.mirae.smartfactory.application.service.StatisticsService;
 import com.mirae.smartfactory.domain.model.statistics.Statistics;
 import com.mirae.smartfactory.domain.model.statistics.StatisticsType;
 import com.mirae.smartfactory.dto.statistics.DailyStatisticsListDto;
