@@ -2,14 +2,11 @@ package com.mirae.smartfactory.application.service;
 
 import com.mirae.smartfactory.config.redis.RefreshRedisRepository;
 import com.mirae.smartfactory.config.redis.RefreshRedisToken;
-import com.mirae.smartfactory.config.security.MemberDetailsService;
 import com.mirae.smartfactory.config.security.jwt.JwtTokenProvider;
 import com.mirae.smartfactory.domain.model.resource.Member;
 import com.mirae.smartfactory.dto.TokenResponseDto;
 import com.mirae.smartfactory.dto.member.LoginResDto;
 import com.mirae.smartfactory.dto.member.SimpleMemberInfo;
-import com.mirae.smartfactory.exception.InvalidPWException;
-import com.mirae.smartfactory.exception.NotExistIdException;
 import com.mirae.smartfactory.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
