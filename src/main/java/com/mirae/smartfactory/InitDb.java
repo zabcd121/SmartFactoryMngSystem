@@ -10,6 +10,7 @@ import com.mirae.smartfactory.domain.model.process.furnace.FurnaceProcess;
 import com.mirae.smartfactory.domain.model.process.furnace.Ingredient;
 import com.mirae.smartfactory.domain.model.resource.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +42,12 @@ public class InitDb {
     static class InitService {
 
         private final EntityManager em;
-//        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+        private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
         public void dbInit1() {
-            Member member = Member.createMember("김현석", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "abcd123", "1234");
-            Member adminMember1 = Member.createMember("관리자1", Title.REPRESENTATIVE, RoleType.ROLE_ADMIN, "admin1234", "1234");
-            Member adminMember2 = Member.createMember("관리자2", Title.REPRESENTATIVE, RoleType.ROLE_ADMIN, "admin2", "1234");
+            Member member = Member.createMember("김현석", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "abcd123", bCryptPasswordEncoder.encode("1234"));
+            Member adminMember1 = Member.createMember("관리자1", Title.REPRESENTATIVE, RoleType.ROLE_ADMIN, "admin1234", bCryptPasswordEncoder.encode("1234"));
+            Member adminMember2 = Member.createMember("관리자2", Title.REPRESENTATIVE, RoleType.ROLE_ADMIN, "admin2", bCryptPasswordEncoder.encode("1234"));
             em.persist(member);
             em.persist(adminMember1);
             em.persist(adminMember2);
@@ -157,7 +158,7 @@ public class InitDb {
         }
 
         public void dbInit2() {
-            Member member = Member.createMember("강수성", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "kang123", "1234");
+            Member member = Member.createMember("강수성", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "kang123", bCryptPasswordEncoder.encode("1234"));
 //            Member member = Member.createMember("강수성", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "kang123", bCryptPasswordEncoder.encode("1234"));
             em.persist(member);
 
@@ -234,7 +235,7 @@ public class InitDb {
 
         }
         public void dbInit3() {
-            Member member = Member.createMember("member1", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "member1", "1234");
+            Member member = Member.createMember("member1", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "member1", bCryptPasswordEncoder.encode("1234"));
 //            Member member = Member.createMember("강수성", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "kang123", bCryptPasswordEncoder.encode("1234"));
             em.persist(member);
 
@@ -313,7 +314,7 @@ public class InitDb {
         }
 
         public void dbInit4() {
-            Member member = Member.createMember("member2", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "member2", "1234");
+            Member member = Member.createMember("member2", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "member2", bCryptPasswordEncoder.encode("1234"));
 //            Member member = Member.createMember("강수성", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "kang123", bCryptPasswordEncoder.encode("1234"));
             em.persist(member);
 
@@ -390,7 +391,7 @@ public class InitDb {
         }
 
         public void dbInit5() {
-            Member member = Member.createMember("member3", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "member3", "1234");
+            Member member = Member.createMember("member3", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "member3", bCryptPasswordEncoder.encode("1234"));
 //            Member member = Member.createMember("강수성", Title.REPRESENTATIVE, RoleType.ROLE_MEMBER, "kang123", bCryptPasswordEncoder.encode("1234"));
             em.persist(member);
 
