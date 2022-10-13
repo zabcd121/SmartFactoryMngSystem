@@ -21,8 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Slf4j
 @Transactional(readOnly = true)
@@ -34,13 +32,6 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberDetailsService myUserDetailsService;
     private final RefreshRedisRepository refreshRedisRepository;
-//    public Member login(String loginId, String password) {
-//        Optional<Member> memberOptional = memberRepository.findByLoginId(loginId);
-//        memberOptional.orElseThrow(() -> new NotExistIdException("존재하지 않는 아이디입니다."));
-//
-//        return memberOptional.filter(m -> m.getPassword().equals(password))
-//                .orElseThrow(() -> new InvalidPWException("잘못된 비밀번호입니다."));
-//    }
 
     @Transactional(readOnly = true)
     public LoginResDto signIn(String loginId, String password) {
