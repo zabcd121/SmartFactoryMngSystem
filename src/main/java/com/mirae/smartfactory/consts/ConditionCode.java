@@ -17,8 +17,6 @@ public enum ConditionCode {
     EXPIRED_TOKEN("0107", "만료된 토큰이 전달되었습니다."),
     UNSUPPORTED_TOKEN("0108", "지원하지 않는 토큰이 전달되었습니다."),
     ACCESS_DENIED("0109", "접근 거부"),
-    WRONG_TOKEN("0110", "wrong token error"),
-    UNKNOWN_ERROR("0111", "unknown error"),
 
 
     /**
