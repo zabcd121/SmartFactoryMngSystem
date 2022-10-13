@@ -1,4 +1,4 @@
-package com.mirae.smartfactory.service;
+package com.mirae.smartfactory.application.service;
 
 import com.mirae.smartfactory.domain.model.process.Process;
 import com.mirae.smartfactory.domain.model.process.casting.Casting;
@@ -67,13 +67,7 @@ public class FurnaceProcessService {
     @Transactional
     public Long updateFurnaceProcess(Long furnaceProcessId, FurnaceProcessDto fpDto) {
         FurnaceProcess orgFp = fpRepository.findById(furnaceProcessId).orElseGet(null);
-//        deleteRemovedResources(orgFp, fpDto); // 이전에 저장했던 resource 들 중 이번 update 요청때는 없어진(= 프론트에서 삭제된) resource 들을 삭제
-//        updateResources(orgFp, fpDto);
         orgFp.changeState(fpDto, fpUpdateService);
-
-//        orgFp.changeState(fpDto, new FurnaceProcessUpdateService(fpRepository, processRepository));
-//        orgFurnaceProcess.changeState(furnaceProcessDto);
-//        fpRepository.update(orgFp);
 
         return orgFp.getFurnaceProcessId();
     }
@@ -101,16 +95,6 @@ public class FurnaceProcessService {
 
         return result;
     }
-
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
-//    protected void deleteRemovedResources(FurnaceProcess orgFp, FurnaceProcessDto updatedFp) {
-//        fpUpdateService.deleteRemovedResources(orgFp, updatedFp);
-//    }
-
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
-//    protected void updateResources(FurnaceProcess orgFp, FurnaceProcessDto updatedFp) {
-//        fpUpdateService.updateResources(orgFp, updatedFp);
-//    }
 
 
 }
