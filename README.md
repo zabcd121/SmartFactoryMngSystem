@@ -13,4 +13,16 @@
 ## ER Diagram
 ![image](https://user-images.githubusercontent.com/68465716/196512643-be05eb17-f2c1-429a-9720-3bbfafc48ef0.png)
 
+## UI
+1. 용해일지
+![image](https://user-images.githubusercontent.com/68465716/196597722-180ba12e-67ca-4e9b-b47a-994eeb83e9a3.png)
+
+2. 주조일지
+
+3. 통계 정보
+![image](https://user-images.githubusercontent.com/68465716/196597534-cb8efdb4-bb14-439c-b60c-46746db33bb8.png)
+
+4. 리소스 관리
+![image](https://user-images.githubusercontent.com/68465716/196597635-2d5bc905-5df8-4c7c-9695-1d2a97c6c768.png)
+
 
