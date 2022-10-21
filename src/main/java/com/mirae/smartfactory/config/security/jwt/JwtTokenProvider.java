@@ -114,4 +114,11 @@ public class JwtTokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
     }
+
+    public Long getExpiration(String accessToken) {
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        Long now = new Date().getTime();
+
+        return (expiration.getTime() - now);
+    }
 }
