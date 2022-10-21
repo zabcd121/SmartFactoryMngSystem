@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @Builder
-public class TokenResponseDto {
+public class TokensDto {
     private String accessToken;
     private String refreshToken;
 
