@@ -1,5 +1,7 @@
 package com.mirae.smartfactory.config.security.jwt;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -15,7 +17,7 @@ public class JwtTokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultS
 
     @Override
     public void configure(HttpSecurity builder) throws Exception {
-        JwtTokenFilter customFilter = new JwtTokenFilter(jwtTokenProvider);
+        JwtTokenFilter customFilter = new JwtTokenFilter(jwtTokenProvider, new RedisTemplate());
         builder.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
