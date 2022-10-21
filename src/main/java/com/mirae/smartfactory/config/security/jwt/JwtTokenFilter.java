@@ -5,9 +5,13 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -17,15 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final RedisTemplate redisTemplate;
+
+
 
     /**
      * JWT를 검증하는 필터
@@ -40,9 +45,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         try{
             if ( jwt != null && jwtTokenProvider.validateToken(jwt)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.info("set Authentication to security context for '{}', uri: {}", authentication.getName(), request.getRequestURI());
+                String isLogout = (String) redisTemplate.opsForValue().get(jwt);
+
+                if(ObjectUtils.isEmpty(isLogout)) {
+                    Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.info("set Authentication to security context for '{}', uri: {}", authentication.getName(), request.getRequestURI());
+                }
             }
         } catch (SignatureException e) {
             request.setAttribute("exception", e);
