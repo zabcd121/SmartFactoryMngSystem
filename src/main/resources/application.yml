@@ -7,7 +7,7 @@ spring:
     password: love1994
 
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/smartfactory?characterEncoding=UTF-8&serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3304/smartfactory?characterEncoding=UTF-8&serverTimezone=UTC
 #    username: root
 #    password: love1994
 
@@ -26,7 +26,7 @@ spring:
 
 jwt:
   secret-key: eycXTuUMQRajJFMKy8aytRysw0bpQGGpmZyyXkCghh355lq5ZEEHPSO9IOmP
-  token-validity-in-sec: 100 # 1??
+  token-validity-in-sec: 1000 # 1??
   refresh-token-validity-in-sec: 604800  # ???
   authorization-header: Authorization
 
@@ -39,7 +39,7 @@ logging:
 
 server:
   port: 8060
-  servlet:
+#  servlet:
 #    session:
 #      tracking-modes: cookie
 #      timeout: 1440m
