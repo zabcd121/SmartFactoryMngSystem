@@ -3,11 +3,9 @@ package com.mirae.smartfactory.controller;
 //import com.mirae.smartfactory.config.security.jwt.JwtProperties;
 //import com.mirae.smartfactory.config.jwt.JwtTokenProvider;
 //import com.mirae.smartfactory.config.security.jwt.JwtUtil;
-import com.mirae.smartfactory.domain.model.resource.Member;
-import com.mirae.smartfactory.dto.TokenResponseDto;
+import com.mirae.smartfactory.dto.TokensDto;
 import com.mirae.smartfactory.dto.member.LoginResDto;
 import com.mirae.smartfactory.dto.member.MemberLoginDto;
-import com.mirae.smartfactory.dto.member.SimpleMemberInfo;
 import com.mirae.smartfactory.dto.result.SuccessNoResult;
 import com.mirae.smartfactory.dto.result.SuccessResult;
 import com.mirae.smartfactory.application.service.MemberService;
@@ -44,17 +42,19 @@ public class MemberApiController {
     }
 
     @DeleteMapping("/logout")
-    public SuccessNoResult logout() {
+    public SuccessNoResult logout(@RequestBody TokensDto tokenDto) {
+        memberService.logout(tokenDto);
         return new SuccessNoResult(LOGOUT_SUCCESS.getCode(), LOGOUT_SUCCESS.getMessage());
     }
 
     /**
      * Access token이 만료되었을 경우 프론트에서 요청할 api
      * @param refreshToken : Refresh token을 입력받는다.
+     * @param refreshToken : Refresh token을 입력받는다.
      * @return TokenResponseDto : Access token과 Refresh token 모두 재발급해준다.
      */
     @PostMapping("/reissue")
-    public TokenResponseDto reissueAccessToken(@RequestParam String refreshToken){
+    public TokensDto reissueAccessToken(@RequestParam String refreshToken){
         return memberService.reissueAccessToken(refreshToken);
     }
 }
