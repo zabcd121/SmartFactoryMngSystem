@@ -1,6 +1,5 @@
 package com.mirae.smartfactory.exception.advice;
 
-import com.mirae.smartfactory.consts.ConditionCode;
 import com.mirae.smartfactory.controller.process.CastingProcessApiController;
 import com.mirae.smartfactory.controller.process.FurnaceProcessApiController;
 import com.mirae.smartfactory.dto.result.ErrorResult;
