@@ -40,8 +40,32 @@ public class FurnaceProcessService {
     private final CastingRepository castingRepository;
     private final MemberRepository memberRepository;
 
+//    @Transactional
+//    public Long saveFurnaceProcess(FurnaceProcessDto furnaceProcessDto) {
+//        Member member = memberRepository.findById(furnaceProcessDto.getProcess().getMemberId());
+//
+//        Process process = ProcessDto.toEntity(furnaceProcessDto.getProcess(), member);
+//        FurnaceProcess furnaceProcess = FurnaceProcessDto.toEntity(furnaceProcessDto, process);
+//
+//        for (Ingredient ingredient : furnaceProcess.getIngredients()) {
+//            fpRepository.saveIngredient(ingredient);
+//        }
+//
+//        for (Additive additive : process.getAdditives()) {
+//            processRepository.saveAdditive(additive);
+//        }
+//
+//        for (Material material : process.getMaterials()) {
+//            processRepository.saveMaterial(material);
+//        }
+//
+//        fpRepository.save(furnaceProcess);
+//
+//        return furnaceProcess.getFurnaceProcessId();
+//    }
+
     @Transactional
-    public Long saveFurnaceProcess(FurnaceProcessDto furnaceProcessDto) {
+    public FurnaceProcess saveFurnaceProcess(FurnaceProcessDto furnaceProcessDto) {
         Member member = memberRepository.findById(furnaceProcessDto.getProcess().getMemberId());
 
         Process process = ProcessDto.toEntity(furnaceProcessDto.getProcess(), member);
@@ -61,7 +85,7 @@ public class FurnaceProcessService {
 
         fpRepository.save(furnaceProcess);
 
-        return furnaceProcess.getFurnaceProcessId();
+        return furnaceProcess;
     }
 
     @Transactional
@@ -74,7 +98,7 @@ public class FurnaceProcessService {
 
     @Transactional
     public void deleteFurnaceProcess(Long processId) {
-        Casting findCasting = castingRepository.findByProcessId(processId).orElseGet(null);
+        Casting findCasting = castingRepository.findByProcessId(processId).orElseGet(() -> null);
         if(findCasting != null) {
             castingRepository.delete(findCasting);
         }
