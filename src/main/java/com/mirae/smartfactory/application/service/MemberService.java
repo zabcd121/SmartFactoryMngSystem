@@ -109,6 +109,7 @@ public class MemberService {
     @Transactional
     public void logout(TokensDto tokensDto) {
         String resolveAccessToken = resolveToken(tokensDto.getAccessToken());
+        System.out.println("logout 액세스토큰: " + resolveAccessToken);
         // 1. access token 검증
         jwtTokenProvider.validateToken(resolveAccessToken);
 
@@ -128,7 +129,7 @@ public class MemberService {
     //token 앞에 "Bearer-" 제거
     private String resolveToken(String token){
         log.info(token);
-        if(token.startsWith("Bearer "))
+        if(token != null && token.startsWith("Bearer "))
             return token.substring(7);
         throw new RuntimeException("not valid refresh token !!");
     }
