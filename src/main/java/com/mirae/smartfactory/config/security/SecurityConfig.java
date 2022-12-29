@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/join");
+        web.ignoring().antMatchers("/members/login", "/members/reissue");
     }
 
     @Override
@@ -63,6 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
+                .antMatchers("/members/**")
+                .access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/mirae/**")
                 .access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/resource/**")
