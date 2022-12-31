@@ -19,26 +19,16 @@ import static com.mirae.smartfactory.consts.ConditionCode.*;
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberApiController {
 
     private final MemberService memberService;
-//    private final JwtTokenProvider jwtTokenProvider;
-//    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public SuccessResult<LoginResDto> login(@Validated @RequestBody MemberLoginDto memberLoginDto, HttpServletResponse response) {
         LoginResDto loginRes = memberService.signIn(memberLoginDto.getLoginId(), memberLoginDto.getPassword());
-//
-//
-//        String authToken = jwtUtil.makeAuthToken(loginMember);
-//        response.addHeader(JwtProperties.HEADER_AUTHORIZATION, JwtProperties.TOKEN_PREFIX + authToken);
-//
-//        SimpleMemberInfo sessionMemberInfo = new SimpleMemberInfo(loginMember.getMemberId(), loginMember.getRoleType());
-
         return new SuccessResult<LoginResDto>(LOGIN_SUCCESS.getCode(), LOGIN_SUCCESS.getMessage(), loginRes);
-
     }
 
     @DeleteMapping("/logout")
@@ -49,7 +39,6 @@ public class MemberApiController {
 
     /**
      * Access token이 만료되었을 경우 프론트에서 요청할 api
-     * @param refreshToken : Refresh token을 입력받는다.
      * @param refreshToken : Refresh token을 입력받는다.
      * @return TokenResponseDto : Access token과 Refresh token 모두 재발급해준다.
      */
