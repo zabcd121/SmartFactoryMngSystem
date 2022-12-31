@@ -42,26 +42,42 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("####doFilterInternal진입");
         String jwt = resolveToken(request, AUTHORIZATION_HEADER);
+        System.out.println("$$$$$$$$$$$$$$$$$$$jwt:" + jwt);
 
         try{
             if ( jwt != null && jwtTokenProvider.validateToken(jwt)) {
-                String isLogout = (String) redisTemplate.opsForValue().get(jwt);
+                System.out.println("validate 성공");
+                String isLogout;
+                try{
+                    isLogout = (String) redisTemplate.opsForValue().get(jwt);
+                } catch (Exception e) {
+                    isLogout = "";
+                }
+
+                System.out.println("로그아웃 체크");
 
                 if(ObjectUtils.isEmpty(isLogout)) {
+                    System.out.println("isEmpty logout");
                     Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
+                    System.out.println("authentication + " + authentication);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info("set Authentication to security context for '{}', uri: {}", authentication.getName(), request.getRequestURI());
                 }
             }
         } catch (SignatureException e) {
+            System.out.println("error 1");
             request.setAttribute("exception", e);
         } catch (MalformedJwtException e) {
+            System.out.println("error 2");
             request.setAttribute("exception", e);
         } catch (ExpiredJwtException e) {
+            System.out.println("error 3");
             request.setAttribute("exception", e);
         } catch (UnsupportedJwtException e) {
+            System.out.println("error 4");
             request.setAttribute("exception", e);
         } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("error 5");
             request.setAttribute("exception", e);
         }
 
@@ -70,6 +86,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private String resolveToken(HttpServletRequest request, String header) {
         String bearerToken = request.getHeader(header);
+        System.out.println("Bearer Token:" + bearerToken);
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
