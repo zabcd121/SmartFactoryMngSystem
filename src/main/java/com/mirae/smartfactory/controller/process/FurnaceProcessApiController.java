@@ -1,6 +1,10 @@
 package com.mirae.smartfactory.controller.process;
 
+import com.mirae.smartfactory.application.service.CastingService;
+import com.mirae.smartfactory.domain.model.process.furnace.FurnaceProcess;
+import com.mirae.smartfactory.dto.BilletDto;
 import com.mirae.smartfactory.dto.PkDto;
+import com.mirae.smartfactory.dto.process.casting.*;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessDto;
 import com.mirae.smartfactory.dto.process.furnace.FurnaceProcessListDto;
 import com.mirae.smartfactory.dto.result.SuccessNoResult;
@@ -21,6 +25,7 @@ import static com.mirae.smartfactory.consts.ConditionCode.*;
 @RequiredArgsConstructor
 public class FurnaceProcessApiController {
     private final FurnaceProcessService furnaceProcessService;
+    private final CastingService castingService;
 
     @GetMapping("/furnaceprocess")
     public SuccessResult<FurnaceProcessListDto> furnaceProcessList(
@@ -34,9 +39,89 @@ public class FurnaceProcessApiController {
     @PostMapping("/furnaceprocess")
     public SuccessResult<PkDto> furnaceProcessSave(@RequestBody FurnaceProcessDto furnaceProcessDto) {
 
-        Long savedFurnaceProcessId = furnaceProcessService.saveFurnaceProcess(furnaceProcessDto);
-
-        return new SuccessResult<>(FURNACEPROCESS_SAVE_SUCCESS, new PkDto(savedFurnaceProcessId));
+        FurnaceProcess savedFurnaceProcess = furnaceProcessService.saveFurnaceProcess(furnaceProcessDto);
+        CastingDto emptyCastingDto = CastingDto.builder()
+                .castingId(null)
+                .tappingStartTime(null)
+                .tappingEndTime(null)
+                .operator(null)
+                .shifter(null)
+                .remarks(null)
+                .process(ProcessSimpleDto.builder()
+                        .processId(savedFurnaceProcess.getProcess().getProcessId())
+                        .date(furnaceProcessDto.getProcess().getDate())
+                        .dailyProcessId(furnaceProcessDto.getProcess().getDailyProcessId())
+                        .furnaceNumber(furnaceProcessDto.getProcess().getFurnaceNumber())
+                        .alloyCode(furnaceProcessDto.getProcess().getAlloyCode())
+                        .size(furnaceProcessDto.getProcess().getSize())
+                        .memberId(furnaceProcessDto.getProcess().getMemberId())
+                        .build())
+                .castingPreparation(CastingPreparationDto.builder()
+                        .castingPreparationId(null)
+                        .rotorSpeed1(null)
+                        .rotorSpeed2(null)
+                        .arAmount1(null)
+                        .arAmount2(null)
+                        .operatingDuration(null)
+                        .outGassingTemperature(null)
+                        .atbSpeed(null)
+                        .castingPreparationMore(null)
+                        .build())
+                .castingData(CastingDataDto.builder()
+                        .castingDataId(null)
+                        .castingSpeedInit(null)
+                        .castingSpeedLampInit(null)
+                        .castingSpeedNormal(null)
+                        .castingSpeedLampStop(null)
+                        .castingSpeedTerminated(null)
+                        .castingTemperature0(null)
+                        .castingTemperature500(null)
+                        .castingTemperature1000(null)
+                        .castingTemperature2000(null)
+                        .castingTemperature3000(null)
+                        .castingTemperature4000(null)
+                        .castingTemperature5000(null)
+                        .castingTemperature5500(null)
+                        .castingTemperature6000(null)
+                        .castingTemperature6500(null)
+                        .castingTemperature7000(null)
+                        .coolingWaterInit(null)
+                        .coolingWaterLampInit(null)
+                        .coolingWaterNormal(null)
+                        .coolingWaterLampStop(null)
+                        .coolingWaterTerminated(null)
+                        .castingOilPressure(null)
+                        .castingOilCycle(null)
+                        .castingOilOnTime(null)
+                        .castingOilOffTime(null)
+                        .gasPressureNeutrality(null)
+                        .gasPressureInit(null)
+                        .gasPressureNormal(null)
+                        .sustainTime(null)
+                        .build())
+                .castingTemperature(CastingTemperatureDto.builder()
+                        .castingTemperatureId(null)
+                        .furnaceTemperatureInit(null)
+                        .furnaceTemperature15M(null)
+                        .furnaceTemperature30M(null)
+                        .furnaceTemperature45M(null)
+                        .furnaceTemperature60M(null)
+                        .furnaceTemperature75M(null)
+                        .furnaceTemperature90M(null)
+                        .coolingWaterTemperatureInit(null)
+                        .coolingWaterTemperatureMiddle(null)
+                        .coolingWaterTemperatureTerminated(null)
+                        .build())
+                .billet(BilletDto.builder()
+                        .billetId(null)
+                        .length(null)
+                        .quantity(null)
+                        .errorQuantity(null)
+                        .errorReason(null)
+                        .build())
+                .build();
+        castingService.saveCasting(emptyCastingDto);
+        return new SuccessResult<>(FURNACEPROCESS_SAVE_SUCCESS, new PkDto(savedFurnaceProcess.getFurnaceProcessId()));
     }
 
     @PutMapping("/furnaceprocess/{id}")
