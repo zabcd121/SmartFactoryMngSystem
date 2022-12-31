@@ -23,6 +23,8 @@ public class Member{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long memberId;
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
     private Title title;
     @Enumerated(value = EnumType.STRING)
     private RoleType roleType;
